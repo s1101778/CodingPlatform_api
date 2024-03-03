@@ -20,7 +20,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($data->all(),[
             'name' => 'required',
-            'account' => 'required|unique:App\Models\User,account|regex:/^sd+$/',
+            'account' => 'required|unique:App\Models\User,account|regex:/^s\d+$/',
             'email' => 'required|email|unique:App\Models\User,email',
             'password' => 'required' ,
         ],[

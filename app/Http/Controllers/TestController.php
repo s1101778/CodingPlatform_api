@@ -9,22 +9,22 @@ class TestController extends Controller
     public function test1()
     {
 
-        return response->json(['success' => $BB_bulletin], 200);
+        return response()->json(['success' => 'success'], 200);
     }
 
     public function test2()
     {
 
-        return response()->json(['success' => $aa], 200);
+        return response()->json(['success' => 'success'], 200);
     }
 
     public function test3()
     {
-        return response()->json(['A_B_same_category_up' => $B_category->flatten(1)], 200);
+        return response()->json(['success' => 'success'], 200);
     }
 
     public function test4()
     {
-        return response()->json(['success' => ''], 200);
+        return response()->json(['success' => 'success'], 200);
     }
 }
