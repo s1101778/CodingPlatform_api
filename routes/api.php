@@ -15,38 +15,48 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "api" middleware group. Make something great!
 |
+1. php artisan migrate
+2. php artisan db:seed --class=UvaTopicTableSeeder
+3. php artisan passport:install
+
 php artisan make:model Name --migration
+
 php artisan make:migration update_flights_table
+
 php artisan migrate
 php artisan migrate:rollback
 
-php artisan db:seed --class=UvaTopicTableSeeder
 
-php artisan route:list 查看可用
+
+php artisan route:list 
 php artisan queue:clear
 sudo supervisorctl restart all
 supervisorctl reread
 supervisorctl update
-php artisan schedule:list 查看排程
+php artisan schedule:list 
 */
 
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('login',[AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login']);
     Route::get('get_all_user', [AuthController::class, 'get_all_user']);
-    
+    Route::post('edit_password', [AuthController::class, 'edit_password']);
+
     Route::prefix('check')->middleware('auth:api')->group(function (){
         Route::post('isadmin', [AuthController::class, 'isadmin']);
     });
 
     Route::middleware('auth:api')->group(function (){   
+        Route::post('user', [AuthController::class, 'user']);
+        Route::post('token_user', [AuthController::class, 'token_user']);
+        Route::post('edit_user', [AuthController::class, 'edit_user']);
         Route::post('logout', [AuthController::class, 'logout']);
  
     });
     Route::prefix('reset_password')->group(function (){
         Route::post('send', [ForgotPasswordController::class, 'send_reset_mail']);
         Route::post('check', [ForgotPasswordController::class, 'token_check']);
-        Route::post('reset', [ForgotPasswordController::class, 'check_reset_email']);
+        Route::post('reset', [ForgotPasswordController::class, 'check_reset_mail']);
     });
 });
 

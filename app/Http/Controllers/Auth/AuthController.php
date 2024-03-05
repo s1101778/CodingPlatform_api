@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Image;
+use Illuminate\Support\Facades\Storage;
 
 
 class AuthController extends Controller
@@ -39,6 +41,9 @@ class AuthController extends Controller
             'email' => $data->email,
             'password' => bcrypt($data->password),
             'remember_token' => Str::random(10),
+            'picture' => 'uploads/userpic/default_user.png',
+            'cover' => 'uploads/coverpic/default_cover.jpeg',
+            'intro' => "Hello! I'm " . $data->name . "!"
         ]);
         $token = $user->createToken('Laravel9PassportAuth')->accessToken;
         return response()->json(['success' => $token], 200);
@@ -57,6 +62,134 @@ class AuthController extends Controller
             return response()->json(['success' => $token, 'user' => $user], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
+        }
+    }
+
+    public function user(Request $data)
+    {
+        $user_id = '';
+        try {
+            $user_id = Auth::user()->id;
+        } catch (\Throwable $th) {
+        }
+
+        $validator = Validator::make($data->all(),[
+            'account' => 'required|exists:users,account',
+        ],[
+            'required' => '欄位沒有填寫完整!',
+            'account.exists' => '用戶不存在',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 402);
+        }
+        $url_user = User::where('account', $data->account)->first();
+        $self = 0;
+        if ($url_user->id == $user_id) {
+            $self = 1;
+        }
+        return response()->json(['user' => $url_user, 'self' => $self, 'user_id' => $user_id], 200);
+    }
+
+    public function token_user()
+    {
+        return response()->json(['user' => Auth::user()], 200);
+    }
+
+    public function edit_user(Request $data)
+    {
+        if ($data->picture) {
+
+
+            $files = scandir(public_path('uploads/userpic/'));
+            foreach ($files as $file) {
+                if (strpos($file, Auth::user()->account . '_userpic') === 0) {
+                    unlink(public_path('uploads/userpic/') . DIRECTORY_SEPARATOR . $file);
+                }
+            }
+
+            if ($data->reset == 1){
+                Auth::user()->update([
+                    'picture' => 'uploads/userpic/default_user.png',
+                ]);
+            } else {
+                $filename = Auth::user()->account . '_userpic_' . time() . '.jpeg';
+                $save_filename = 'uploads/userpic/' . Auth::user()->account . '_userpic_' . time() . '.jpeg';
+                Image::make($data->picture)->resize(300, 300)->save(public_path('uploads/userpic/' . $filename));
+                Auth::user()->update([
+                    'picture' => $save_filename,
+                ]);
+            }
+        } else if ($data->cover) {
+            $files = scandir(public_path('uploads/coverpic/'));
+            foreach ($files as $file) {
+                if (strpos($file, Auth::user()->account . '_coverpic') === 0) {
+                    unlink(public_path('uploads/coverpic/') . DIRECTORY_SEPARATOR . $file);
+                }
+            }
+
+            if ($data->reset == 1) {
+                Auth::user()->update([
+                    'cover' => 'uploads/coverpic/default_cover.jpg',
+                ]);
+            } else {
+                $filename = Auth::user()->account . '_coverpic_' . time() . '.jpeg';
+                $save_filename = 'uploads/coverpic/' . Auth::user()->account . '_coverpic_' . time() . '.jpeg';
+                Image::make($data->cover)->resize(1500,300)->save(public_path('uploads/coverpic/' . $filename));
+                Auth::user()->update([
+                    'cover' => $save_filename,
+                ]);
+            }
+        } else {
+            if (Auth::user()->email != $data->email) {
+                $validator = Validator::make($data->all(),[
+                    'email' => 'required|email|unique:App\Models\User,email',
+                ],[
+                    'required' => '欄位沒有填寫完整!',
+                    'email.email' => '信箱格式錯誤',
+                    'email.unique' => '信箱已被使用',
+                ]);
+                if ($validator->fails()){
+                    return response()->json(['error' => $validator->errors()->first()], 402);
+                }
+            }
+            Auth::user()->update([
+                'name' => $data->name,
+                'email' => $data->email,
+                'intro' => $data->intro,
+                'github' => $data->github,
+                'instagram' => $data->instragram,
+                'facebook' => $data->facebook,
+            ]);
+        }
+        return response()->json(['user' => '更新成功'], 200);
+    }
+
+    public function edit_password(Request $data)
+    {
+        $validator = Validator::make($data->all(),[
+            'account' => 'required|exists:App\Models\User,account',
+            'old_password' => 'required',
+            'password' => 'required',
+        ],[
+            'required' => '欄位沒有填寫完整!',
+            'account,exists' => '帳號不存在',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 402);
+        }
+
+        $userdata = [
+            'account' => $data->account,
+            'password' => $data->old_password
+        ];
+
+        if (Auth::attempt($userdata)) {
+            Auth::user()->update([
+                'password' => bcrypt($data->password),
+            ]);
+            return response()->json(['user' => '更新成功'], 200);
+        } else {
+            return response()->json(['error' => '舊密碼錯誤'], 402);
         }
     }
 

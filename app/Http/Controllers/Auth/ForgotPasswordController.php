@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use App\Model\PasswordReset;
+use App\Models\PasswordReset;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ForgotPasswordController extends Controller
 {
-    public function send_reset_mail(Reques $request)
+    public function send_reset_mail(Request $request)
     {
 
         $data = Validator::make($request->all(),[
@@ -33,7 +33,7 @@ class ForgotPasswordController extends Controller
         // Generate random code
         $newdata['token'] = time() . mt_rand(100000, 999999);
         $newdata['email'] = $request->email;
-        $newdata['created_at'] = data('Y-m-d H:i:s');
+        $newdata['created_at'] = date('Y-m-d H:i:s');
 
         // Create a new code
         PasswordReset::insert($newdata);
@@ -45,7 +45,7 @@ class ForgotPasswordController extends Controller
         $website = 'http://127.0.0.1/Coding-platform/CodingPlatform_api/public/api/auth/reset_password/' . $newdata['token'];
         Mail::raw('請點擊網址:' . $website . '前往修改密碼。請注意，此連結僅在申請修改密碼後的一小時內有效。此郵件為系統自動發送。請勿回覆。', function (Message $message) use ($email, $user){
             $message->from('root@gm.pu.edu.tw', '程式交流網');
-            $message->to($email, $user)->subject('城市交流網-修改密碼通知');
+            $message->to($email, $user)->subject('程式交流網-修改密碼通知');
         });
         return response(['success' => "已成功發送修改密碼郵件"], 200);
     }
@@ -53,7 +53,7 @@ class ForgotPasswordController extends Controller
     public function token_check(Request $request)
     {
         $data = Validator::make($request->all(),[
-            'token' => 'required|string|exists:password_resets,token',
+            'token' => 'required|string|exists:password_reset_tokens,token',
         ],[
             'required' => '欄位沒有填寫完整!',
             'token.exists' => '無此token',
@@ -72,7 +72,7 @@ class ForgotPasswordController extends Controller
     public function check_reset_mail(Request $request)
     {
         $data = Validator::make($request->all(), [
-            'toke' => 'required|string|exists:password_resets',
+            'token' => 'required|string|exists:password_reset_tokens',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
         ],[

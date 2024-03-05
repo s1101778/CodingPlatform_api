@@ -22,6 +22,13 @@ class User extends Authenticatable
         'account',
         'email',
         'password',
+        'picture',
+        'cover',
+        'intro',
+        'github',
+        'instagram',
+        'facebook',
+        'isadmin'
     ];
 
     /**

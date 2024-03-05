@@ -30,5 +30,13 @@
         "workspaceRoot": "/var/www/CodingForum_api",
         "workspacePath": "routes/api.php",
         "id": "ITfWhvMu4Z5tQbEV"
+    },
+    {
+        "type": "Directory",
+        "name": "/var/www/CodingForum_api/public",
+        "parent_id": null,
+        "workspaceRoot": "/var/www/CodingForum_api",
+        "workspacePath": "public",
+        "id": "ivJ0GQg8OwmrnYTZ"
     }
 ]
