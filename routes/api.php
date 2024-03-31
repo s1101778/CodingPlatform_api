@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UvaController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,8 @@ supervisorctl update
 php artisan schedule:list 
 */
 
+Route::get('proxy/get_uva_pdf/{serial}',[UvaController::class, 'get_uva_pdf']);
+
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
@@ -60,6 +63,19 @@ Route::prefix('auth')->group(function () {
     });
 });
 
+Route::prefix('forum')->group(function () {
+    Route::prefix('check')->middleware('auth:api')->group(function () {
+        Route::post('user_post_check', [PostController::class, 'user_post_check']);
+    });
+    Route::middleware('auth:api')->group(function () {
+        Route::post('post', [PostController::class, 'post']);
+        Route::post('get_user_post', [PostController::class, 'get_user_post']);
+        Route::post('like_post', [PostController::class, 'like_post']);
+        Route::post('del_post', [PostController::class, 'del_post']);
+    });
+    Route::get('get_uva', [UvaController::class, 'get_uva']);
+    Route::post('get_post', [PostController::class, 'get_post']);
+});
 
 
 
