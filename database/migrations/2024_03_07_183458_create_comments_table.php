@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->comment('外鍵_使用者ID');
+            $table->unsignedBigInteger('parent_comment_id')->nullable();
+            $table->foreign('parent_comment_id')->references('id')->on('comments')->onDelete('cascade')->comment('外鍵_父comment_id');
+            $table->integer('children_comment_count')->default(0);
+            $table->foreignId('post_id')->constrained()->onDelete('cascade')->comment('外鍵_文章ID');
+            $table->text('content');
+            $table->integer('likes')->default(0);
             $table->timestamps();
         });
     }

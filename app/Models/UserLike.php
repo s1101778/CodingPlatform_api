@@ -12,6 +12,7 @@ class UserLike extends Model
     protected $fillable = [
         'user_id',
         'post_id',
+        'comment_id',
         'dislike_or_like',
         'updated_at', 
         'created_at',
@@ -19,4 +20,16 @@ class UserLike extends Model
     protected $attributes = [
         'dislike_or_like' => 0, // 默認值為 0
     ];
+    public function Post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+    public function Comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

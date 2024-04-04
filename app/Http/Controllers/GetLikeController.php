@@ -16,7 +16,7 @@ class GetLikeController extends Controller
     public function get_like(Request $data)
     {
         $validator = Validator::make($data->all(), [
-            'post_id' => 'required|exists:post,id',
+            'post_id' => 'required|exists:posts,id',
         ], [
             'required' => '欄位沒有填寫完整',
             'post_id.exists' => '貼文不存在',
