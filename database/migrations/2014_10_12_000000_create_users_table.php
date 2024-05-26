@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->unsignedTinyInteger('isadmin')->default(0)->comment(`'0:學生 , 1:教師 , 2:TA'`);
             $table->string('name');
             $table->string('account')->unique();
             $table->string('email');

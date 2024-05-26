@@ -61,4 +61,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tags::class, 'Taged_user_id', 'id');
     }
-}
+    public function UserClass()
+    {
+        return $this->hasMany(UserClass::class);
+    }
+    public function TeacherClass()
+    {
+        return $this->hasMany(TeacherClass::class);
+    }
+    public function HandInAssignment()
+    {
+        return $this->hasMany(HandInAssignment::class);
+    }
+    public function PostLimit()
+    {
+        return $this->hasMany(PostLimit::class);
+    }
+}   

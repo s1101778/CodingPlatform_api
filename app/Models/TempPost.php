@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class TempPost extends Model
 {
     use HasFactory;
     protected $guarded = [];
@@ -18,16 +18,12 @@ class Post extends Model
     {
         return $this->belongsTo(UvaTopic::class);
     }
-    public function Comment()
+    public function Post()
     {
-        return $this->hasMany(Comment::class);
+        return $this->belongsTo(Post::class);
     }
-    public function UserLike()
+    public function Assignment()
     {
-        return $this->hasMany(UserLike::class);
-    }
-    public function HandInAssignment()
-    {
-        return $this->hasMany(HandInAssignment::class);
+        return $this->belongsTo(Assignment::class);
     }
 }

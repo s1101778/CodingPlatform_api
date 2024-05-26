@@ -21,3 +21,4 @@ public/uploads/userpic/*
 !public/uploads/userpic/default_user.png
 public/uploads/coverpic/*
 !public/uploads/coverpic/default_cover.jpeg
+public/uploads/assignment

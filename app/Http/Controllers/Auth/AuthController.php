@@ -157,7 +157,7 @@ class AuthController extends Controller
                 'email' => $data->email,
                 'intro' => $data->intro,
                 'github' => $data->github,
-                'instagram' => $data->instragram,
+                'instagram' => $data->instagram,
                 'facebook' => $data->facebook,
             ]);
         }

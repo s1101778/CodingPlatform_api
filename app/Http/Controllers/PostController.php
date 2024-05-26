@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\UvaTopic;
 use App\Models\Post;
+use App\Models\PostLimit;
+use App\Models\TempPost;
 use App\Models\User;
 use App\Models\UserLike;
 use Illuminate\Support\Facades\Cache;
-
+use Carbon\Carbon;
 
 
 class PostController extends Controller
@@ -57,11 +59,46 @@ class PostController extends Controller
                     'code_type' => $data->code_type,
                     'code_editor_type' => $data->code_editor_type,
                 ]);
-                return response()->json(['success' => '成功更新貼文', 'post_id' => $data->post_id], 200);
+
+                $assignment = Auth::user()->UserClass->map->CodingClass->map->Assignment->flatten(1);
+                $now = Carbon::now();
+                $assignment_update = 0;
+                $assignment = $assignment->map(function ($item, $key) use ($now, $data, $video_id, $video_pic_url, &$assignment_update) {
+                    if ($now->isAfter($item->start_at) && $now->isBefore($item->end_at)) {
+                        if ($item->HandInAssignment?->map->TempPost?->map->post_id->first() == $data->post_id) {
+                            TempPost::where(['assignment_id' => $item->id, 'post_id' => $data->post_id])->first()->update([
+                                'uva_topic_id' => UvaTopic::get_uva_topic_id($data->serial),
+                                'video_url' => 'https://www.youtube.com/watch?v=' . $video_id,
+                                'video_id' => $video_pic_url,
+                                'video_pic_url' => $video_pic_url,
+                                'content' => $data->content,
+                                'code' => $data->code,
+                                'code_type' => $data->code_type,
+                                'code_editor_type' => $data->code_editor_type,
+                            ]);
+                            $assignment_update = 1;
+                        }
+                    }
+                });
+                if ($assignment_update == 1) {
+                    return response()->json(['success' => '成功更新貼文 並更新在期限內且選擇此貼文之作業', 'post_id' => $data->post_id], 200);
+                } else {
+                    return response()->json(['success' => '成功更新貼文', 'post_id' => $data->post_id], 200);
+                }
             } else {
                 return response()->json(['error' => '此貼文並非您發布，請重新輸入'], 200);
             }
+
         } else {
+            $postlimit = Auth::user()->PostLimit->first();
+            if ($postlimit) {
+                $now = Carbon::now();
+                if ($now->isBefore($postlimit->end_at)) {
+                    return response()->json(['error' => '一分鐘內僅限發布一則貼文'], 402);
+                } else {
+                    $postlimit->delete();
+                }
+            }
             $post = Post::create([
                 'user_id' => Auth::user()->id,
                 'uva_topic_id' => UvaTopic::get_uva_topic_id($data->serial),
@@ -72,6 +109,10 @@ class PostController extends Controller
                 'code' => $data->code,
                 'code_type' => $data->code_type,
                 'code_editor_type' => $data->code_editor_type,
+            ]);
+            PostLimit::create([
+                'user_id' => Auth::user()->id,
+                'end_at' => Carbon::now()->addMinutes(1)
             ]);
             return response()->json(['success' => '成功創立貼文', 'post_id' => $post->id], 200);
         }
@@ -253,6 +294,27 @@ class PostController extends Controller
             );
         }
         return response()->json(['success' => $posts], 200);
+    }
+
+    public function get_temp_post(Request $data)
+    {
+        $temp_post_id = $data->temp_post_id;
+        $validator = Validator::make($data->all(), [
+            'temp_post_id' => 'required|exists:temp_post,id',
+        ], [
+            'required' => '欄位沒有填寫完整!',
+            'temp_post_id.exists' => 'temp貼文不存在',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 402);
+        }
+
+        $temp_post = TempPost::find($temp_post_id);
+        $temp_post->user_account = $temp_post->fresh()->User->account;
+        $temp_post->user_name = $temp_post->fresh()->User->name;
+        $temp_post->user_picture = $temp_post->fresh()->User->picture;
+        $temp_post->uva_topic = $temp_post->UvaTopic;
+        return response()->json(['success' => $temp_post], 200);
     }
 
     public function tidy_post($item)

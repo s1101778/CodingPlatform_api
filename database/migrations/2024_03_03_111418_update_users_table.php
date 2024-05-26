@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('instagram')->nullable()->after('remember_token');
             $table->text('github')->nullable()->after('remember_token');
             $table->text('intro')->after('remember_token');
-            $table->unsignedTinyInteger('isadmin')->default(0)->after('id')->comment('0:學生 , 1:教師 , 2:TA');
         });
     }
 
