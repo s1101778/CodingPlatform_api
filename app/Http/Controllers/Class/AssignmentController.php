@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\HandInAssignment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\File;
 
 class AssignmentController extends Controller
 {
@@ -30,11 +30,16 @@ class AssignmentController extends Controller
 
         $final_file = $filename . '.' . $extension;
 
-        $directory = public_path('uploads/assignment/' . $data->assignment_id . '/' . Auth::user()->account);
+        $directory = public_path('uploads/assignment/' . $data->assignment_id);
 
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
             chown($directory, 'www-data');
+        }
+
+        $file_path = $directory . '/' . $final_file;
+        if (file_exists($file_path)) {
+            return response()->json(['error' => '檔案已存在，請更改檔名後再上傳'], 409);
         }
 
         $file->move($directory, $final_file);
@@ -49,15 +54,15 @@ class AssignmentController extends Controller
             return response()->json(['error' => '權限不符，並非課程教授'], 402);
         }
 
-        $files = scandir(public_path('uploads/assignment/' . $data->assignment_id . '/' . Auth::user()->account));
+        $files = scandir(public_path('uploads/assignment/' . $data->assignment_id));
         $file_count = count($files) - 2;
         foreach ($files as $file) {
             if (strpos($file, $data->file_name) === 0) {
-                unlink(public_path('uploads/assignment/' . $data->assignment_id . '/' . Auth::user()->account) . DIRECTORY_SEPARATOR . $file);
+                unlink(public_path('uploads/assignment/' . $data->assignment_id) . DIRECTORY_SEPARATOR . $file);
             }
         }
         if ($file_count - 1 == 0) {
-            rmdir(public_path('uploads/assignment/' . $data->assignment_id . '/' . Auth::user()->account));
+            rmdir(public_path('uploads/assignment/' . $data->assignment_id));
         }
 
         return response()->json(['success' => 'success delete', 'test' => $file_count], 200);
@@ -184,7 +189,7 @@ class AssignmentController extends Controller
             return response()->json(['error' => '確認字樣不同 請重新輸入'], 402);
         }
 
-        Storage::deleteDirectory('/public/uploads/assignment/' . $data->assignment_id);
+        File::deleteDirectory('uploads/assignment/' . $data->assignment_id);
         Assignment::find($data->assignment_id)->delete();
         return response()->json(['success' => '成功刪除作業'], 200);
     }

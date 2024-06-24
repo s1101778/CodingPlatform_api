@@ -12,7 +12,7 @@ class UvaTopic extends Model
     protected $casts = [];
     public function Post()
     {
-        return $this->belongsTo(Post::class);
+        return $this->hasMany(Post::class);
     }
     public static function get_uva_topic_id($serial)
     {

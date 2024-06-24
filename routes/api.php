@@ -8,6 +8,7 @@ use App\Http\Controllers\Class\TAController;
 use App\Http\Controllers\Class\TeacherClassController;
 use App\Http\Controllers\Class\UserClassController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GetCollectController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UvaController;
 use App\Http\Controllers\GetLikeController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\GetTagController;
 use Illuminate\Support\Facades\Route;
 use App\Models\UvaTopic;
 use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -116,11 +118,14 @@ Route::prefix('forum')->group(function () {
         Route::post('post', [PostController::class, 'post']);
         Route::post('get_user_post', [PostController::class, 'get_user_post']);
         Route::post('like_post', [PostController::class, 'like_post']);
+        Route::post('collect_post', [PostController::class, 'collect_post']);
+        Route::post('get_collect_post', [PostController::class, 'get_collect_post']);
         Route::post('del_post', [PostController::class, 'del_post']);
         Route::post('comment', [CommentController::class, 'comment']);
         Route::post('like_comment', [CommentController::class, 'like_comment']);
         Route::post('del_comment', [CommentController::class, 'del_comment']);
         Route::post('get_like', [GetLikeController::class, 'get_like']);
+        Route::post('get_collect', [GetCollectController::class, 'get_collect']);
         Route::post('get_tags', [GetTagController::class, 'get_tags']);
         Route::post('all_tag_view', [GetTagController::class, 'all_tag_view']);
     });

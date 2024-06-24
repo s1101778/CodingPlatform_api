@@ -35,9 +35,7 @@ class CommentController extends Controller
         $temp_content = str_replace("data-id", "dataid", $temp_content);
 
         $tags = collect(HtmlDomParser::str_get_html($temp_content)->findMulti('.mention')->dataid);
-        preg_match_all('/@(\w+)/', $temp_content, $matches);
-        $taggedUsernames = $matches[1];
-        $tags = collect($taggedUsernames);
+        
         if (Comment::find($data->comment_id)) {
             if (Comment::find($data->comment_id)->user_id == Auth::user()->id) {
                 Comment::find($data->comment_id)->update([

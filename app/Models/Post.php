@@ -26,6 +26,11 @@ class Post extends Model
     {
         return $this->hasMany(UserLike::class);
     }
+
+    public function UserCollect()
+    {
+        return $this->hasMany(UserCollect::class);
+    }
     public function HandInAssignment()
     {
         return $this->hasMany(HandInAssignment::class);

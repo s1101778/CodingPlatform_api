@@ -11,6 +11,7 @@ use App\Models\PostLimit;
 use App\Models\TempPost;
 use App\Models\User;
 use App\Models\UserLike;
+use App\Models\UserCollect;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
@@ -196,6 +197,8 @@ class PostController extends Controller
 
         return response()->json(['success' => '更新喜歡狀態成功', 'user_post_like' => $user_like?->dislike_or_like, 'now_post_like' => $now_post_like], 200);
     }
+
+
     public function get_user_post()
     {
         $posts = Auth::user()->Post;
@@ -204,6 +207,68 @@ class PostController extends Controller
                 return self::tidy_post($item);
             }
         );
+        return response()->json(['success' => $posts], 200);
+    }
+
+    public function collect_post(Request $data)
+    {
+        $validator = Validator::make($data->all(), [
+            'post_id' => 'required|exists:posts,id',
+            'collect' => 'required'
+        ], [
+            'required' => '欄位沒有填寫完整',
+            'post_id.exists' => '貼文不存在',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 402);
+        }
+        $collect = $data->collect;
+        if ($collect != 0 && $collect != 1) {
+            return response()->json(['error' => 'collect 只限於 0 or 1'], 402);
+        }
+        $user_collect = UserCollect::where([
+            'user_id' => Auth::user()->id,
+            'post_id' => $data->post_id,
+        ])->first();
+        $post = Post::find($data->post_id);
+        if ($user_collect === null ) {
+            if($collect == 1){
+                UserCollect::create([
+                    'user_id' => Auth::user()->id,
+                    'post_id' => $data->post_id,
+                    'collect' => $collect,
+                ]);
+                $post->increment('collects');
+            }
+
+        } else {
+            if ($collect == 0 && $user_collect->collect==1) {
+                $user_collect->delete();
+                $post->decrement('collects');
+            }
+        }
+        $user_collect = UserCollect::where([
+            'user_id' => Auth::user()->id,
+            'post_id' => $data->post_id,
+        ])->first();
+
+        $now_post_collect = Post::find($data->post_id)->collects;
+
+        return response()->json(['success' => '更新收藏狀態成功', 'user_post_collect' => $user_collect?->collect, 'now_post_collect' => $now_post_collect], 200);
+
+    }
+    public function get_collect_post(Request $data)
+    {
+        $userCollects = Auth::user()->UserCollect;
+
+        if ($userCollects->isEmpty()) {
+            return response()->json(['error' => '尚未收藏'], 200);
+        }
+        $posts = $userCollects->pluck('post');
+
+        $posts = $posts->map(function ($item, $key) {
+            return self::tidy_post($item, $key);
+        });
         return response()->json(['success' => $posts], 200);
     }
 
@@ -231,7 +296,14 @@ class PostController extends Controller
                 }
             } else {
                 if ($serial) {
-                    $posts = UvaTopic::where('serial', $serial)->first()->Post;
+                    $uvaTopic = UvaTopic::where('serial', $serial)->first();
+                    if ($uvaTopic) {
+                        // 如果找到了對應的 UvaTopic，則獲取相關的 Post
+                        $posts = Post::where('uva_topic_id', $uvaTopic->id)->get();
+                    } else {
+                        // 如果沒有找到對應的 UvaTopic，則返回空集合
+                        $posts = collect(); // 返回空集合
+                    }
                 } else {
                     $posts = Post::all();
                 }
@@ -248,12 +320,16 @@ class PostController extends Controller
                     switch ($item) {
                         case '14':
                             return 'C';
+                            break;
                         case '15':
                             return 'C++';
+                            break;
                         case '16':
                             return 'Java';
+                            break;
                         case '17':
                             return 'Python';
+                            break;
                     }
                 });
                 $posts = $posts->filter()->values();  //清null 以防上方篩star 出現null 導致$item->code_type 出錯
@@ -280,7 +356,7 @@ class PostController extends Controller
                     $posts = $posts->sortByDesc('created_at')->sortByDesc('comments_count');
                     break;
                 case 5:
-                    $posts = $posts->sortByDesc('created_at')->sortByDesc('comments_count');
+                    $posts = $posts->sortByDesc('created_at')->sortBy('comments_count');
                     break;
                 default:
                     $posts = $posts->sortByDesc('created_at');
@@ -300,7 +376,7 @@ class PostController extends Controller
     {
         $temp_post_id = $data->temp_post_id;
         $validator = Validator::make($data->all(), [
-            'temp_post_id' => 'required|exists:temp_post,id',
+            'temp_post_id' => 'required|exists:temp_posts,id',
         ], [
             'required' => '欄位沒有填寫完整!',
             'temp_post_id.exists' => 'temp貼文不存在',
@@ -331,6 +407,7 @@ class PostController extends Controller
             'video_pic_url' => $item['video_pic_url'],
             'content' => $item['content'],
             'likes' => $item['likes'],
+            'collects' => $item['collects'],
             'comments_count' => $item['comments_count'],
             'code' => $item['code'],
             'code_editor_type' => $item['code_editor_type'],

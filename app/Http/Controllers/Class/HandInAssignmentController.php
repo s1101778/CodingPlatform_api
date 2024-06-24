@@ -79,7 +79,15 @@ class HandInAssignmentController extends Controller
             mkdir($directory, 0755, true);
             chown($directory, 'www-data');
         }
+
+        $file_path = $directory . '/' . $final_file;
+        if (file_exists($file_path)) {
+            return response()->json(['error' => '檔案已存在，請更改檔名後再上傳'], 409);
+        }
+
         $file->move($directory, $final_file);
+
+        
         return response()->json(['message' => 'success add'], 200);
     }
     public function delete_file(Request $data)

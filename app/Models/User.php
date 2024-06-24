@@ -22,6 +22,7 @@ class User extends Authenticatable
         'account',
         'email',
         'password',
+        'remember_token',
         'picture',
         'cover',
         'intro',
@@ -56,6 +57,10 @@ class User extends Authenticatable
     public function UserLike()
     {
         return $this->hasMany(UserLike::class);
+    }
+    public function UserCollect()
+    {
+        return $this->hasMany(UserCollect::class);
     }
     public function Taged()
     {

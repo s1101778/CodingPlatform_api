@@ -21,8 +21,8 @@ paths:
     post:
       tags:
         - auth
-      summary: 上傳影片功能
-      description: 上傳影片功能
+      summary: 註冊功能
+      description: 註冊功能
       operationId: post
       requestBody:
         description: Create a new pet in the store
@@ -58,6 +58,59 @@ paths:
       responses:
         "200":
           description: OK
+  /auth/reset_password/send:
+    post:
+      tags:
+        - auth
+      summary: 寄送重設密碼信件功能
+      description: 寄送重設密碼信件功能
+      operationId: post
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /auth/reset_password/check:
+    post:
+      tags:
+        - auth
+      summary: 確認 token 功能
+      description: 確認 token 功能
+      operationId: post
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /auth/reset_password/reset:
+    post:
+      tags:
+        - auth
+      summary: 重設密碼功能
+      description: 重設密碼功能
+      operationId: post
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+
+
   /forum/post:
     post:
       tags:
@@ -77,7 +130,7 @@ paths:
       responses:
         "200":
           description: OK
-
+  
 
 
 
