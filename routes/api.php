@@ -8,9 +8,10 @@ use App\Http\Controllers\Class\TAController;
 use App\Http\Controllers\Class\TeacherClassController;
 use App\Http\Controllers\Class\UserClassController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\GetCollectController;
+use App\Http\Controllers\GetSubscribeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UvaController;
+use App\Http\Controllers\UvaCodeController;
 use App\Http\Controllers\GetLikeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\GetTagController;
@@ -50,6 +51,7 @@ php artisan schedule:list
 */
 
 Route::get('proxy/get_uva_pdf/{serial}', [UvaController::class, 'get_uva_pdf']);
+Route::get('proxy/get_uva_code_pdf/{serial}', [UvaCodeController::class, 'get_uva_code_pdf']);
 
 Route::prefix('class')->middleware('auth:api')->group(function () {
     Route::post('upload_file', [HandInAssignmentController::class, 'upload_file']);
@@ -115,21 +117,25 @@ Route::prefix('forum')->group(function () {
         Route::post('user_post_check', [PostController::class, 'user_post_check']);
     });
     Route::middleware('auth:api')->group(function () {
+        Route::post('get_post_auth', [PostController::class, 'get_post_auth']);
         Route::post('post', [PostController::class, 'post']);
         Route::post('get_user_post', [PostController::class, 'get_user_post']);
         Route::post('like_post', [PostController::class, 'like_post']);
-        Route::post('collect_post', [PostController::class, 'collect_post']);
-        Route::post('get_collect_post', [PostController::class, 'get_collect_post']);
+        Route::post('subscribe_post', [PostController::class, 'subscribe_post']);
+        Route::post('get_subscribe_post', [PostController::class, 'get_subscribe_post']);
         Route::post('del_post', [PostController::class, 'del_post']);
         Route::post('comment', [CommentController::class, 'comment']);
         Route::post('like_comment', [CommentController::class, 'like_comment']);
         Route::post('del_comment', [CommentController::class, 'del_comment']);
         Route::post('get_like', [GetLikeController::class, 'get_like']);
-        Route::post('get_collect', [GetCollectController::class, 'get_collect']);
+        Route::post('get_like_post', [PostController::class, 'get_like_post']);
+        Route::post('get_subscribe', [GetSubscribeController::class, 'get_subscribe']);
+        Route::post('get_post_view', [PostController::class, 'get_post_view']);
         Route::post('get_tags', [GetTagController::class, 'get_tags']);
         Route::post('all_tag_view', [GetTagController::class, 'all_tag_view']);
     });
     Route::get('get_uva', [UvaController::class, 'get_uva']);
+    Route::get('get_uva_code', [UvaCodeController::class, 'get_uva_code']);
     Route::post('get_post', [PostController::class, 'get_post']);
     Route::post('get_temp_post', [PostController::class, 'get_temp_post']);
     Route::post('get_comment', [CommentController::class, 'get_comment']);

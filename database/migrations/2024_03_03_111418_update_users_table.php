@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('picture')->after('remember_token');
             $table->string('cover')->after('remember_token');
-            $table->text('facebook')->nullable()->after('remember_token');
-            $table->text('instagram')->nullable()->after('remember_token');
             $table->text('github')->nullable()->after('remember_token');
             $table->text('intro')->after('remember_token');
         });
@@ -29,8 +27,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('picture');
             $table->dropColumn('cover');
-            $table->dropColumn('facebook');
-            $table->dropColumn('instagram');
             $table->dropColumn('github');
             $table->dropColumn('intro');
             $table->dropColumn('isadmin');

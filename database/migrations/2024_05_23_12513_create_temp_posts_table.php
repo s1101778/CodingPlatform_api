@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('temp_posts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade')->comment('外鍵_使用者ID');
-            $table->foreignIdFor(Post::class)->nullable()->constrained()->onDelete('set null')->comment('外鍵_原始貼文ID');
+            $table->foreignIdFor(Post::class)->nullable()->constrained()->onDelete('set null')->comment('外鍵_影片ID');
             $table->foreignIdFor(Assignment::class)->constrained()->onDelete('cascade')->comment('外鍵_作業ID');
             $table->foreignIdFor(UvaTopic::class)->constrained()->onDelete('cascade')->comment('外鍵_題目ID');
             $table->text('video_url');

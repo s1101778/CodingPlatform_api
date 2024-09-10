@@ -1,0 +1,132 @@
+---code---
+//uva10931
+#include <iostream>
+
+const unsigned int MASK = 1<<31;
+
+int main(){
+  using namespace std;
+  int input;
+  while(cin >> input,input){
+    cout << "The parity of ";
+    unsigned int mask = 1<<31;
+    int count = 0;
+    for(;mask&& !(mask&input);mask >>= 1);
+
+    for(;mask;mask >>= 1){
+      cout << 0 + !!(mask & input);
+      count += !!(mask & input);
+    }
+
+   cout << " is " << count << " (mod 2)."<< endl;
+
+
+  }
+  return 0;
+}
+---dataAInput---
+1
+2
+10
+21
+3
+4
+5
+6
+16
+20
+33
+34
+127
+128
+2388
+2338
+12329
+28999
+100000
+200001
+1209923
+21340000
+234020033
+2147483647
+2147483646
+0
+---dataAOutput---
+
+The parity of 1 is 1 (mod 2).
+The parity of 10 is 1 (mod 2).
+The parity of 1010 is 2 (mod 2).
+The parity of 10101 is 3 (mod 2).
+The parity of 11 is 2 (mod 2).
+The parity of 100 is 1 (mod 2).
+The parity of 101 is 2 (mod 2).
+The parity of 110 is 2 (mod 2).
+The parity of 10000 is 1 (mod 2).
+The parity of 10100 is 2 (mod 2).
+The parity of 100001 is 2 (mod 2).
+The parity of 100010 is 2 (mod 2).
+The parity of 1111111 is 7 (mod 2).
+The parity of 10000000 is 1 (mod 2).
+The parity of 100101010100 is 5 (mod 2).
+The parity of 100100100010 is 4 (mod 2).
+The parity of 11000000101001 is 5 (mod 2).
+The parity of 111000101000111 is 8 (mod 2).
+The parity of 11000011010100000 is 6 (mod 2).
+The parity of 110000110101000001 is 7 (mod 2).
+The parity of 100100111011001000011 is 10 (mod 2).
+The parity of 1010001011001111101100000 is 12 (mod 2).
+The parity of 1101111100101101110011000001 is 16 (mod 2).
+The parity of 1111111111111111111111111111111 is 31 (mod 2).
+The parity of 1111111111111111111111111111110 is 30 (mod 2).
+---dataBInput---
+
+7
+8
+10
+30
+40
+50
+346
+53
+100
+2234
+1602
+6034
+50234
+103001
+200003
+23434
+123229
+2899
+100200
+200201
+1209233
+2134020
+23402033
+214743647
+0
+---dataBOutput---
+The parity of 111 is 3 (mod 2).
+The parity of 1000 is 1 (mod 2).
+The parity of 1010 is 2 (mod 2).
+The parity of 11110 is 4 (mod 2).
+The parity of 101000 is 2 (mod 2).
+The parity of 110010 is 3 (mod 2).
+The parity of 101011010 is 5 (mod 2).
+The parity of 110101 is 4 (mod 2).
+The parity of 1100100 is 3 (mod 2).
+The parity of 100010111010 is 6 (mod 2).
+The parity of 11001000010 is 4 (mod 2).
+The parity of 1011110010010 is 7 (mod 2).
+The parity of 1100010000111010 is 7 (mod 2).
+The parity of 11001001001011001 is 8 (mod 2).
+The parity of 110000110101000011 is 8 (mod 2).
+The parity of 101101110001010 is 8 (mod 2).
+The parity of 11110000101011101 is 10 (mod 2).
+The parity of 101101010011 is 7 (mod 2).
+The parity of 11000011101101000 is 8 (mod 2).
+The parity of 110000111000001001 is 7 (mod 2).
+The parity of 100100111001110010001 is 10 (mod 2).
+The parity of 1000001001000000000100 is 4 (mod 2).
+The parity of 1011001010001011000110001 is 11 (mod 2).
+The parity of 1100110011001011101001011111 is 17 (mod 2).

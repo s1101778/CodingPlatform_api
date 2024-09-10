@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserCollect extends Model
+class UserSubscribe extends Model
 {
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'post_id',
-        'collect',
+        'author_id',
+        'subscribe',
         'updated_at',
         'created_at',
     ];
     protected $attributes = [
-        'collect' => 0, // 默認值為 0
+        'subscribe' => 0, // 默認值為 0
     ];
     public function Post()
     {

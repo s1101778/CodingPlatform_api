@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_collects', function (Blueprint $table) {
+        Schema::create('post_views', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade')->comment('外鍵_使用者ID');
-            $table->foreignId('post_id')->nullable()->constrained()->onDelete('cascade')->comment('外鍵_文章ID');
-            $table->integer('collect');
+            $table->unsignedBigInteger('user_id')->nullable()->constrained()->onDelete('cascade')->comment('外鍵_使用者ID');
+            $table->unsignedBigInteger('post_id')->constrained()->onDelete('cascade')->comment('外鍵_文章ID');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_collects');
+        Schema::dropIfExists('post_views');
     }
 };

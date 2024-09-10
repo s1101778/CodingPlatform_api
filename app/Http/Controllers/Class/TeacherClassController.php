@@ -108,9 +108,7 @@ class TeacherClassController extends Controller
     {
         $validator = Validator::make($data->all(), [
             'coding_class_id' => 'required|exists:coding_classes,id',
-            'check' => 'required'
         ], [
-            'check.required' => '未填入確認刪除字樣',
             'required' => '欄位沒有填寫完整!',
             'coding_class_id.exists' => '課程不存在',
         ]);
@@ -121,9 +119,6 @@ class TeacherClassController extends Controller
             return response()->json(['error' => '權限不符，並非課程教授'], 402);
         }
         $codingclass = CodingClass::find($data->coding_class_id);
-        if ($data->check != '確認刪除' . $codingclass->school_year . '_' . $codingclass->name) {
-            return response()->json(['error' => '確認字樣不同 請重新輸入'], 402);
-        }
 
         $oldTAs_id = CodingClass::find($data->coding_class_id)->getTeacherClass_TA_user_ids();
         $oldTAs_id->map(function ($oldTA_user_id, $key) use ($data) {

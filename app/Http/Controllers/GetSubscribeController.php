@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserCollect;
+use App\Models\UserSubscribe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
-class GetCollectController extends Controller
+class GetSubscribeController extends Controller
 {
-    public function get_collect(Request $data)
+    public function get_subscribe(Request $data)
     {
         $validator = Validator::make($data->all(), [
             'post_id' => 'required|exists:posts,id',
@@ -20,13 +20,13 @@ class GetCollectController extends Controller
             'post_id.exists' => '貼文不存在',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 403);
+            return response()->json(['error' => $validator->errors()->first()], 402);
         }
 
-        $user_post_collect = UserCollect::where([
+        $user_post_subscribe = UserSubscribe::where([
             'user_id' => Auth::user()->id,
             'post_id' => $data->post_id
-        ])->first()?->collect;
-        return response()->json(['user_post_collect' => $user_post_collect], 200);
+        ])->first()?->subscribe;
+        return response()->json(['user_post_subscribe' => $user_post_subscribe], 200);
     }
 }

@@ -1,0 +1,153 @@
+---code---
+//uva10783
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	int t, ti = 0;
+	cin >> t;
+	int arr[101] = {};
+	for(int i = 1; i < 101; ++i) {
+		if(i % 2 == 1)
+			arr[i] = i;
+		arr[i] += arr[i-1];
+	}
+	while(ti++ < t) {
+		int a, b;
+		cin >> a >> b;
+
+		if(a == 0)
+			a = 1;
+
+		cout << "Case " << ti << ": " << arr[b] - arr[a-1] << endl;
+	}
+	return 0;
+}
+---dataAInput---
+
+20
+1
+5
+3
+5
+50
+92
+2
+31
+11
+76
+29
+35
+29
+62
+51
+94
+37
+91
+21
+63
+28
+98
+50
+60
+43
+86
+0
+1
+0
+0
+99
+100
+100
+100
+1
+100
+19
+32
+7
+10
+---dataAOutput---
+Case 1: 9
+Case 2: 8
+Case 3: 1491
+Case 4: 255
+Case 5: 1419
+Case 6: 128
+Case 7: 765
+Case 8: 1584
+Case 9: 1792
+Case 10: 924
+Case 11: 2205
+Case 12: 275
+Case 13: 1408
+Case 14: 1
+Case 15: 0
+Case 16: 99
+Case 17: 0
+Case 18: 2500
+Case 19: 175
+Case 20: 16
+---dataBInput---
+20
+0
+1
+0
+0
+99
+100
+100
+100
+1
+100
+7
+84
+87
+92
+42
+73
+2
+95
+16
+53
+78
+89
+5
+10
+11
+46
+25
+50
+74
+79
+68
+96
+9
+47
+25
+74
+25
+30
+25
+66
+---dataBOutput---
+Case 1: 1
+Case 2: 0
+Case 3: 99
+Case 4: 0
+Case 5: 2500
+Case 6: 1755
+Case 7: 267
+Case 8: 928
+Case 9: 2303
+Case 10: 665
+Case 11: 504
+Case 12: 21
+Case 13: 504
+Case 14: 481
+Case 15: 231
+Case 16: 1148
+Case 17: 560
+Case 18: 1225
+Case 19: 81
+Case 20: 945

@@ -1,0 +1,84 @@
+---code---
+//uva10193
+#include <iostream>
+#include <string>
+using namespace std;
+
+int int_str(const string &s) {
+	int x = 0, len = s.length();
+	for (int i = 0; i < len; i++) x *= 2, x += s[i] - '0';
+	return x;
+}
+
+int gcd(int a,int b) {
+	while ((a %= b) && (b %= a));
+	return a + b;
+}
+
+int main() {
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		string a,b;
+		cin >> a >> b;
+		
+		cout << "Pair #" << i << ": ";
+		if (gcd(int_str(a), int_str(b)) != 1) {
+			cout << "All you need is love!" << endl;
+		} else {
+			cout << "Love is not all you need!" << endl;
+		}
+	}
+	return 0;
+}
+---dataAInput---
+7
+11011
+11001
+111000
+110001
+10010
+1010011
+110000001
+110000110
+111
+111
+1101000010001000011110111000
+1110010000111100011101110001
+101111101000011001100111111011
+110111111101001110111011110101
+---dataAOutput---
+
+Pair #1: Love is not all you need!
+Pair #2: All you need is love!
+Pair #3: Love is not all you need!
+Pair #4: All you need is love!
+Pair #5: All you need is love!
+Pair #6: Love is not all you need!
+Pair #7: All you need is love!
+---dataBInput---
+
+7
+101
+101
+110000111011110111110001001000
+101111100000000111011111010111
+10110100101010110111010010000
+10000011101101111011101101111
+101100
+1001101
+100001
+100011
+110000001
+111100011
+1011011
+1000100
+---dataBOutput---
+
+Pair #1: All you need is love!
+Pair #2: All you need is love!
+Pair #3: Love is not all you need!
+Pair #4: All you need is love!
+Pair #5: Love is not all you need!
+Pair #6: All you need is love!
+Pair #7: Love is not all you need!

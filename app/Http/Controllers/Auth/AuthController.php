@@ -42,7 +42,7 @@ class AuthController extends Controller
             'password' => bcrypt($data->password),
             'remember_token' => Str::random(10),
             'picture' => 'uploads/userpic/default_user.png',
-            'cover' => 'uploads/coverpic/default_cover.jpeg',
+            'cover' => 'uploads/coverpic/default_cover.png',
             'intro' => "Hello! I'm " . $data->name . "!"
         ]);
         $token = $user->createToken('Laravel9PassportAuth')->accessToken;
@@ -112,8 +112,8 @@ class AuthController extends Controller
                     'picture' => 'uploads/userpic/default_user.png',
                 ]);
             } else {
-                $filename = Auth::user()->account . '_userpic_' . time() . '.jpeg';
-                $save_filename = 'uploads/userpic/' . Auth::user()->account . '_userpic_' . time() . '.jpeg';
+                $filename = Auth::user()->account . '_userpic_' . time() . '.png';
+                $save_filename = 'uploads/userpic/' . Auth::user()->account . '_userpic_' . time() . '.png';
                 Image::make($data->picture)->resize(300, 300)->save(public_path('uploads/userpic/' . $filename));
                 Auth::user()->update([
                     'picture' => $save_filename,
@@ -129,11 +129,11 @@ class AuthController extends Controller
 
             if ($data->reset == 1) {
                 Auth::user()->update([
-                    'cover' => 'uploads/coverpic/default_cover.jpg',
+                    'cover' => 'uploads/coverpic/default_cover.png',
                 ]);
             } else {
-                $filename = Auth::user()->account . '_coverpic_' . time() . '.jpeg';
-                $save_filename = 'uploads/coverpic/' . Auth::user()->account . '_coverpic_' . time() . '.jpeg';
+                $filename = Auth::user()->account . '_coverpic_' . time() . '.png';
+                $save_filename = 'uploads/coverpic/' . Auth::user()->account . '_coverpic_' . time() . '.png';
                 Image::make($data->cover)->resize(1500,300)->save(public_path('uploads/coverpic/' . $filename));
                 Auth::user()->update([
                     'cover' => $save_filename,
@@ -157,8 +157,6 @@ class AuthController extends Controller
                 'email' => $data->email,
                 'intro' => $data->intro,
                 'github' => $data->github,
-                'instagram' => $data->instagram,
-                'facebook' => $data->facebook,
             ]);
         }
         return response()->json(['user' => '更新成功'], 200);

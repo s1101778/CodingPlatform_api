@@ -1,0 +1,176 @@
+---code---
+//uva10093
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+int main() {
+	int n, temp, max_num, total;
+	string s, output;
+	unordered_map<char, int> m;
+
+	for (int i = 0; i < 10; ++i)
+		m['0' + i] = i;
+	for (int i = 0; i < 26; ++i)
+		m['A' + i] = 10 + i;
+	for (int i = 0; i < 26; ++i)
+		m['a' + i] = 36 + i;
+	m['-'] = 0;
+
+	while (cin >> s) {
+		n = s.length();
+		total = 0;
+		max_num = 1;
+		for (int i = 0; i < n; ++i) {
+			temp = m[ s[n - i - 1] ];
+			total += temp;
+			max_num = max(max_num, temp);
+		}
+		
+		output = "such number is impossible!";
+		for (int i = max_num + 1; i <= 62; ++i) {
+			if (total % (i - 1) == 0) {
+				output = to_string(i);
+				break;
+			}
+		}
+
+		cout << output << endl;
+	}
+
+
+	return 0;
+}
+---dataAInput---
+3
+5
+A
+2
+4
+6
+7
+8
+9
+10
+11
+B
+Z
+236
+752
+8364
+283429
+Arping
+765
+kjlsdf
+2432
+AAA
+ABCDee
+23khasf
+123456789
+987654321
+Cbyang
+CBYANG
+101010
+1234GHIJK
+15678BCDEF7
+kwkkwe
+283jsjjnsjkzs
+---dataAOutput---
+
+4
+6
+11
+3
+5
+7
+8
+9
+10
+2
+2
+12
+36
+12
+8
+22
+15
+such number is impossible!
+10
+such number is impossible!
+12
+11
+43
+such number is impossible!
+10
+10
+such number is impossible!
+54
+2
+21
+34
+such number is impossible!
+such number is impossible!
+---dataBInput---
+6
+827
+9723
+732AC
+sjkksd
+2i238
+VDAC
+eJ2x
+BDv
+cU
+CZA2
+ms
+3jkVT
+BAG
+BBCD
+NgM
+TCL
+p2
+2734
+Chouhl
+Ih
+ABCD
+VKsjR
+VCDX
+283j439
+sbFS
+28338
+2886
+291
+vzxyw
+---dataBOutput---
+7
+18
+22
+18
+such number is impossible!
+60
+34
+61
+such number is impossible!
+such number is impossible!
+60
+such number is impossible!
+such number is impossible!
+38
+48
+such number is impossible!
+32
+54
+9
+such number is impossible!
+62
+24
+60
+such number is impossible!
+such number is impossible!
+such number is impossible!
+9
+9
+13
+such number is impossible!

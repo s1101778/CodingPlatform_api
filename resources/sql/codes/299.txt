@@ -1,0 +1,187 @@
+---code---
+//uva299
+#include <stdio.h>
+
+int main()
+{
+	int n, l, i, k, tr[100], t, count;
+	scanf("%d", &n);
+	while(n--) {
+		for(i = 0; i < 100; i++)
+			tr[i] = 0;
+		count = 0;
+		scanf("%d", &l);
+		for(i = 0; i < l; i++)
+			scanf("%d", &tr[i]);
+		for(i = 0; i < l - 1; i++)
+			for(k = 0; k < l - 1; k++)
+				if(tr[k]>tr[k+1])
+				{
+					t = tr[k];
+					tr[k] = tr[k + 1];
+					tr[k + 1] = t;
+					count++;
+				}
+		printf("Optimal train swapping takes %d swaps.\n",count);
+	}
+
+	return 0;
+}
+
+---dataAInput---
+25
+3
+1 3 2
+4
+4 3 2 1
+2
+2 1
+2
+1 2
+1
+1
+5
+1 5 2 3 4
+5
+1 2 3 4 5
+5
+5 2 3 4 1
+6
+6 5 4 3 2 1
+6
+1 3 2 4 5 6
+7
+6 2 5 3 1 7 4
+12
+6 3 9 4 8 7 2 10 11 12 5 1
+15
+6 15 9 5 1 12 13 14 4 10 3 8 7 11 2
+19
+10 17 12 8 1 2 16 6 14 11 15 9 7 4 19 5 3 18 13
+48
+31 37 40 27 46 22 7 10 23 5 33 39 17 32 36 26 4 12 19 20 16 42 18 41 30 43 28 47 35 1 2 38 25 48 9 6 45 34 3 44 21 14 8 11 24 13 15 29
+42
+24 6 22 21 39 40 7 18 30 15 29 11 42 12 34 2 14 27 20 3 19 41 1 25 26 38 5 17 8 28 13 16 35 31 37 36 9 10 4 23 33 32
+46
+25 14 18 8 38 7 19 45 46 5 43 34 9 36 33 37 12 30 26 42 10 29 11 1 15 3 21 27 6 28 16 32 40 31 13 35 17 44 41 23 24 2 4 22 39 20
+47
+4 37 34 16 26 23 6 11 5 1 7 32 29 12 14 10 3 36 35 18 2 42 21 31 20 33 40 30 44 43 38 46 45 8 28 13 27 41 39 19 24 47 15 25 22 9 17
+32
+14 12 15 26 1 21 16 8 9 30 24 23 10 7 18 27 32 6 13 11 17 29 31 4 22 2 19 25 3 5 28 20
+33
+26 33 3 18 30 13 32 12 27 14 8 11 17 1 31 4 6 21 10 20 22 19 7 25 9 28 16 2 5 29 23 24 15
+32
+24 16 23 2 12 15 9 6 4 20 13 26 11 29 18 22 21 7 25 19 8 3 14 5 32 17 28 30 31 1 27 10
+33
+3 8 23 33 29 30 13 19 12 31 17 2 24 9 27 10 21 14 26 25 22 16 18 6 4 28 15 20 11 5 7 1 32
+22
+15 19 17 12 5 4 16 13 10 8 18 6 14 20 22 9 3 11 7 21 1 2
+50
+14 8 41 50 7 20 16 31 49 29 37 15 18 21 19 10 44 23 42 26 38 46 32 17 3 5 47 40 39 34 35 24 43 1 33 4 48 27 2 12 28 45 22 36 6 30 25 9 13 11
+49
+35 22 3 2 31 10 8 27 38 43 28 11 49 21 45 19 9 14 15 13 36 4 34 37 47 46 26 41 16 18 7 23 25 17 32 44 24 20 40 1 42 6 33 30 29 5 39 12 48
+
+---dataAOutput---
+Optimal train swapping takes 1 swaps.
+Optimal train swapping takes 6 swaps.
+Optimal train swapping takes 1 swaps.
+Optimal train swapping takes 0 swaps.
+Optimal train swapping takes 0 swaps.
+Optimal train swapping takes 3 swaps.
+Optimal train swapping takes 0 swaps.
+Optimal train swapping takes 7 swaps.
+Optimal train swapping takes 15 swaps.
+Optimal train swapping takes 1 swaps.
+Optimal train swapping takes 11 swaps.
+Optimal train swapping takes 30 swaps.
+Optimal train swapping takes 61 swaps.
+Optimal train swapping takes 86 swaps.
+Optimal train swapping takes 614 swaps.
+Optimal train swapping takes 424 swaps.
+Optimal train swapping takes 527 swaps.
+Optimal train swapping takes 444 swaps.
+Optimal train swapping takes 240 swaps.
+Optimal train swapping takes 281 swaps.
+Optimal train swapping takes 221 swaps.
+Optimal train swapping takes 304 swaps.
+Optimal train swapping takes 139 swaps.
+Optimal train swapping takes 654 swaps.
+Optimal train swapping takes 542 swaps.
+---dataBInput---
+25
+4
+2 1 4 3
+3
+2 3 1
+7
+4 1 6 2 7 5 3
+3
+1 2 3
+8
+2 7 6 3 4 1 5 8
+7
+7 6 5 4 3 2 1
+41
+27 28 8 16 35 18 30 10 37 21 12 39 17 24 20 13 11 25 23 22 5 31 1 6 4 7 32 26 34 29 40 2 14 33 19 38 9 15 36 3 41
+50
+50 36 6 23 10 3 43 48 29 31 25 39 11 15 21 1 5 18 2 22 26 28 7 44 27 8 38 19 17 35 14 37 46 30 47 16 40 12 32 34 4 49 42 13 20 33 41 9 24 45
+30
+3 5 9 30 15 28 20 6 10 11 14 2 22 16 18 19 24 4 21 25 7 17 1 29 23 27 12 8 13 26
+24
+8 14 18 21 22 12 19 2 4 17 13 23 5 16 6 20 11 7 15 1 24 10 9 3
+28
+8 4 7 23 14 1 6 13 22 19 28 26 10 27 12 5 24 11 17 21 20 9 18 15 3 2 25 16
+34
+15 20 29 5 1 12 19 8 4 10 23 31 26 33 32 18 25 14 34 6 24 30 27 16 21 22 28 11 9 17 2 3 7 13
+36
+18 15 21 12 25 2 6 32 19 8 30 28 5 7 22 31 10 13 3 29 20 34 33 4 23 9 17 26 27 24 1 16 14 36 35 11
+42
+31 26 42 21 7 11 36 5 22 19 2 39 10 37 40 17 30 18 15 35 13 25 3 33 6 12 23 24 4 32 38 29 41 1 16 27 20 28 34 9 8 14
+10
+10 9 4 2 1 7 5 8 6 3
+15
+13 15 10 5 7 14 9 2 8 4 3 11 12 6 1
+37
+37 35 32 22 25 2 14 5 31 12 21 16 34 11 24 6 7 20 29 15 13 4 26 23 19 3 8 1 17 36 9 18 28 10 30 33 27
+9
+9 2 1 6 8 3 5 7 4
+21
+16 15 13 19 21 8 6 18 4 14 9 17 12 11 20 7 10 5 1 3 2
+19
+5 19 11 8 18 7 10 12 15 3 14 4 9 13 2 6 16 17 1
+12
+7 8 4 1 10 2 9 6 12 5 11 3
+23
+5 9 22 4 19 23 15 6 20 1 2 3 16 8 18 11 13 14 10 17 21 7 12
+18
+10 1 12 9 14 7 8 5 6 11 18 17 2 16 13 15 3 4
+25
+24 14 19 8 6 20 13 11 2 25 4 10 1 23 18 16 12 22 17 3 5 15 7 9 21
+50
+50 49 48 47 46 45 44 43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
+---dataBOutput---
+Optimal train swapping takes 2 swaps.
+Optimal train swapping takes 2 swaps.
+Optimal train swapping takes 9 swaps.
+Optimal train swapping takes 0 swaps.
+Optimal train swapping takes 12 swaps.
+Optimal train swapping takes 21 swaps.
+Optimal train swapping takes 400 swaps.
+Optimal train swapping takes 550 swaps.
+Optimal train swapping takes 180 swaps.
+Optimal train swapping takes 161 swaps.
+Optimal train swapping takes 177 swaps.
+Optimal train swapping takes 298 swaps.
+Optimal train swapping takes 282 swaps.
+Optimal train swapping takes 460 swaps.
+Optimal train swapping takes 28 swaps.
+Optimal train swapping takes 71 swaps.
+Optimal train swapping takes 355 swaps.
+Optimal train swapping takes 18 swaps.
+Optimal train swapping takes 152 swaps.
+Optimal train swapping takes 95 swaps.
+Optimal train swapping takes 30 swaps.
+Optimal train swapping takes 120 swaps.
+Optimal train swapping takes 74 swaps.
+Optimal train swapping takes 164 swaps.
+Optimal train swapping takes 1225 swaps.

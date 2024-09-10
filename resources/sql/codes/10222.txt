@@ -1,0 +1,111 @@
+---code---
+//uva10222
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string dic = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
+
+    int N;
+    cin >> N;
+    cin.ignore();
+    while (N--) {
+        string words;
+        getline(cin, words);
+        for (int i = 0; i < words.size(); ++i) {
+            if ('A' <= words[i] && words[i] <= 'Z')
+                words[i] += 32; // to lower case
+            int pos = dic.find(words[i]);
+            if (pos != -1)
+                words[i] = dic[pos - 2];
+        }
+        cout << words << endl;
+    }
+
+    return 0;
+}
+---dataAInput---
+
+19
+K[R DYT I[o
+J[[g .[Y,P,j
+KT''[ R[Y'G
+ertdFGcVb
+ERTyUioP[]
+dfGHjKl;'cVB
+UkPf pf uKt hpYFu UTFu Bdft
+E]t[YpuOId'F;gLhKJCV.B,nM
+d,G uKTYT DYt .[yT UKD, uT, bdFtF
+p, UKt EOTfup[, I[O kDNt u[ P.]Y[NT I[OY
+b[gT PF b[YytBU D,G P RP'' uT'' I[o rKTUkTy I[oY d,fRty PF DBbT]UTg [Y ,[U
+H[Y ukt FTB[,G BDFt G[ i[O uKp,; ukT Ft,ut,FTF .d;t fT,FT Ph i[O uKP,; f[ i[o dyt Ry[,J
+rK[ u['G i[O ukDU UKT ft,ut,ftF .d;t Ft,fT .Dimt lOfU d '[U [H .tD,P,j'TFf r[yGf D,G ]Ou U[jtukTy b[p,bpGt,U'I
+.d;t FoYt d]]'T UkDU Md,d,d Bd, gtbPgt T't]kD,U u[ HpJKU RpUK jPYdHHT Kdnp,j p.][fFPM't l[;T 'dUT .[NP,j ,[yuk []][F
+][]P,j ;gD EoTFup[, ypjku y[o,g F[O,g ft'' FTU Uyouk UyOfu ud'' oh[ o,p[, O,PH[Y. O,phPTG nput N[uT np''dJt rdi rDv RdNt VYDI vrKDu
+iTfu itf i[oyF i[O,Jty ],to.[,[o'Uyd.PBy[fb[]PBfp'pB[N['BD,[B[,p[FPf FI,bKy[,[OF Gpd]KYdJ.DUPB H'ouutY FUTy,OUDUT m[ym[yIj.Of f;t'TU[,
+mydp, ktdYu 'o,jF 'pNtY f[U.dkb F.D'' P,utFuP,T 'DYjt P,fUTRtuP,T dMG[.T,. dM.o'dy,Bt md,gdJT Mp'dUTtYd'  Bd,bTY BDfu b['[, BYUbkTf gpDj
+,[fpf t.tyJT,TBi TvUyT.PUI HTNY H'o hYdbuoYt Kty,pd pb,FPfP[, p,]DUpt,U 'tFp[, []TdYUp[, [yJd,f [Ou]Dupt,U ]Dp,. ]kIFPBD' ]Y[fUKTFfpF DFdB
+nDBBP,T N[.Pu RkTt'BKpDY  bDYgP[nDfBO'dy b[y[,Dyi JdfUY[P,Utfup,d' p,UTJo.T,u .oFbd'odY ,tyn[oF fIFut. ,tYo['[jPbd' yTF]PYdu[YTi F;T'Tud'  FT,F[YI oyP,DYi
+---dataAOutput---
+
+how are you
+good morning
+hello world
+qweasdzxc
+qwertyuiop
+asdfghjklzxc
+this is the first test case
+qpeorituyalskdjfhgzxmcnvb
+and there are more than ten cases
+in the question you have to improve your
+code is correct and i will tell you whether your answer is accepted or not
+for the second case do you think the sentenses make sense if you think so you are wrong
+who told you that the sentenses make sense maybe just a lot of meaningless words and put together coincidently
+make sure apple that banana can decide elephant to fight with giraffe having impossible joke late moving north oppos
+poping kda question right round sound sell set truth trust tall ufo union uniform unified vite vote village way wax wave xray xwhat
+yest yes yours younger pneumonoultramicroscopicsilicovolcanoconiosis synchronous diaphragmatic flutter sternutate borborygmus skeleton
+brain heart lungs liver sotmahc small intestine large instewetine abdomenm abmularnce bandage bilateeral  cancer cast colon crtches diag
+nosis emergenecy extremity fevr flu fracture hernia icnsision inpatient lesion opeartion organs outpatient painm physical prosthessis asac
+vaccine vomit wheelchiar  cardiovascular coronary gastrointestinal integument muscaluar nervous system neruological respiratorey skeletal  sensory urinary
+---dataBInput---
+
+18
+k[r GDyt I[O
+j[[g ,PJku tnTyi[,t
+FDi kp U[ UKpF b 'D,JodjT
+KGdd;u MF.oT''] KJ[K,U U.TdU[kJp
+DU[UTUr[ OfTF'.kD 'g;U fGu,P[ jfNDTDp[[ DmBB
+,PgKYU 'u]p'  'J]tDVfpuPYj .ttK,OpTB fjUuPFRyKt D.TTu
+dFyBPfyy u.OK ddh,;Fypf[;u p,ifE,d, [JhuIB PKdUtUBR[ 
+UKutykkfT [.FtD.rTPy  GFu'ydju  TKKrnHByptpG[f,Yf[ KtGtd f;i
+db t[F'Y,UP ojTuk g'F,d ',br jHDPk' .YTJYGbuD po,H.putTPFD,d nD,ph.U
+uK,u'  IptT Gf,hP, D]J,[,Yj, nP,Tjp TFKOu fky[fD[, fuKBPu[bPg o''uUu
+T'UTFt peKFuHPO[Y PpDugR.Tb,[M,T bNFMY k[YtUOu.F b'['p,N.okkId,,puR'tHTtOt,tut
+m[bk[[ogFK.Ptb[Gd GtMGtgHtj yPDTh UfbKPjKF d.yypK],[G mGDPy['TUt.[m tPyOD'DgmJiU]Gd
+yYf[.[P, dMuk [OUGgtUf[ 'y[FrFKDT tOf'DuFD[NUtBit,[TTPmJ tR',ooFu[gtK KDUOOJ]drKDUJy,
+Bu[,D[,,Kr'fG u.jyTyUD,T Uf]TyRkj T't pYkk,B bT.TBDPDKK,UbD tk'D]fk,oh't,u,p[ 'fTT[TPbtYkk
+KTdUjFT[,]KtgdIpffrDpDgrGt,pOU,'DtY;TJDKfFhtyPbytN[oY]'dMf]I]'ouKbTY''FT[D[d]NbDYT,FD][[tpKYTfp'TGO
+kttfF'FK[p],PT P[]I] ndGOobtfG .[FT'Tfgt .tT' b[[. ,[[Bty FJ;pyjtY[ fGktuJdpB'[muu y['[gy[tf gFBp'PK
+MFyT,tGD[ [,Dg id[,tuI YPyIFtfNi '.ty'id f,,[Rky'ND 'uKjg'bIUU;hT[g, pT ,tfFtUyt,Yt KDbidu[..tRU,]Ytyb'[,gy[M
+[t[TUT.yK]MdYf'If,koHIh.Enj JuT'TJRdfFk'BDTdU'.vyD IbkUk,tkM]uIkguDPT,y,yU UDtTH.OfDtH,uyhYRdp pPgU.O[ UUupmtbTK[kR'uGodDk[fkj,
+---dataBOutput---
+
+how dare you
+good night everyone
+say hi to this c language
+hdaakt bsmuellp hgohnt tmeatohgi
+atotetwo useslmha ldkt sdtnio gsvaeaioo abcc
+nidhrt ltpil  lgpeaxsitirg meehnuiec sgttiswrhe ameet
+asrcisrr tmuh aafnksrisokt inysqnan ogftyc ihatetcwo 
+thterhhse omseamweir  dstlragt  ehhwvfcrieidosnrso hedea sky
+ac eoslrnti ugeth dlsna lncw gfaihl mregrdcta iunfmiteeisana vanifmt
+thntl  yiee dsnfin apgnonrgn vinegi eshut shrosaon sthcitocid ullttt
+eltese iqhstfiuor iiatdwmecnobne cvsbr horetutms clolinvmuhhyannitwlefeeuenete
+bochooudshmiecoda debdedfeg riaef tschighs amrrihpnod bdairoletemob eirualadbgytpda
+rrsomoin abth outddetso lroswshae euslatsaovtecyenoeeibg ewlnuustodeh hatuugpawhatgrn
+ctonaonnhwlsd tmgrertane tsperwhg ele irhhnc cemecaiahhntca ehlapshnuflentnio lseeoeicerhh
+heatgseonphedayisswaiadwdeniutnlaerkegahssfericrevourplabspypluthcerllseoaoapvcarensapooeihresiledu
+heesslshoipnie iopyp vaduucesd moselesde meel coom noocer sgkirgero sdhetgaiclobtt rolodroes dscilih
+bsrenedao onad yaonety rirysesvy lmerlya snnowhrlva lthgdlcyttkfeodn ie nessetrenre hacyatommewtnprerclondrob
+oeoetemrhpbarslysnhufyfmqvg gtelegwasshlcaeatlmxra ychthnehbptyhdtaienrnrt taeefmusaefntrfrwai iidtmuo tttibecehohwltduaahoshgn

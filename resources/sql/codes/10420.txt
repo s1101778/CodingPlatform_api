@@ -1,0 +1,178 @@
+---code---
+//uva10420
+#include<iostream>
+#include<map>
+using namespace std;
+int main(){
+   map<string,int> count;
+   map<string,int>::iterator iter;
+   string first_s;
+   char others[76]={0};
+   int n;
+   cin>>n;
+   cin.ignore();
+   while (n--){
+      cin>>first_s;
+      count[first_s]++;
+      cin.getline(others,76);
+   }
+for (iter=count.begin(); iter!=count.end();iter++){
+      cout<<iter->first<<" ";
+      cout<<iter->second<<endl;
+   }
+   return 0;
+}
+---dataAInput---
+
+20
+Spain Donna Elvira
+England Jane Doe
+Spain Donna Anna
+Netherlands Myrthe Polder
+America Michelle LaVaughn Robinson Obama
+England Theresa May
+Spain Sandra Gallardo
+Canada Jenna Agnew
+America Oprah Winfrey
+Spain Marta Nicart
+Spain Gemma Gili
+Germany Johanna Hegering
+Canada Rebecca Gilles
+Switzerland Jana Bachmann
+England Donna Langley
+India Roshni Nadar Malhotra
+Switzerland Martina Dickenmann
+Australia Gina Rinehart
+Germany Meike Hegering
+Canada Kaila Zadorsky
+---dataAOutput---
+
+America 2
+Australia 1
+Canada 3
+England 3
+Germany 2
+India 1
+Netherlands 1
+Spain 5
+Switzerland 2
+---dataBInput---
+
+90
+America Phebe Novakovic
+Portugal Diana Silva
+Germany Sandra Teschke
+Malaysia Tengku Anis Tengku
+Taiwan Chuang Chia chia
+Afghanistan Rula Ghani
+Spain Gemma Mengual
+Iraq Samira Talfah
+Syria Asma Akhras
+America Priscilla Chan
+Norway Ingrid Thorisdottir
+America Dana Walden
+Japan Himawari Okoye
+Spain Alba Maria Rodriguez
+Norway Maren Minde
+Turkey Bahar Sarica
+America Diana Trump
+France Charlotte Cissoko
+America Jessica Jones
+France Sandrine Laurent
+Turkey Yasemin Sanders
+Norway Cecilie Graham Hansen
+America Jessica Redstone
+Turkey Birsel Alben
+America Jessica Brewer
+Korea Jessica Sooyoun Jung
+Singapore Ho Ching
+Myanmar Henry Van Suu
+Singapore Chew Poh Yim
+Norway Ingvild Thorsnes
+Russia Anastasia Ermakova
+Netherlands Laura Buijs
+France Marion Torrent
+Japan Evelyn Nemoto
+Germany Franzisca Hauke
+Taiwan Chi Ling Lin
+Norway Maria Haug
+England Katie Bell
+Taiwan Tzu Ying Tai
+England Hannah Abbott
+Turkey Esmeral Nevlin
+Germany Miriam Gnabry
+Australia Sam Vanna
+Belgium Elien Van Wynendaele
+Germany Katharina Otte
+Poland Maria Szymborska
+Belgium Tine De Caigny
+England Ginevra Weasley
+Germany Nike Lorenz
+England Alicia Spinnet
+England Susan Bones
+Germany Franziska Weber
+Belgium Yana Biesmans
+Australia Elise Ibini
+Italy Aurora Boattin
+Turkey Yasemin Ural
+Norway Vilde Risa
+Spain Paola Tirados
+Russia Anna Shorina
+France Sonia Georges
+Norway Isabell Moe Wold
+Netherlands Celeste Knip
+Romania Iuliana Oprea
+Russia Ovchinnikova
+Norway Maren Hjelmseth
+Australia Laura Polkinghorne
+Italy Valentina Tarenzi
+Norway Tuva Utland
+Russia Elvira Khasyanova
+Australia Lydia Williams
+Russia Svetlana Kuzhela
+Turkey Esmeral Cora
+Denmark Hedvig Andersen
+Belgium Diede Lemey
+Norway Linda Mjelde
+Australia Katrina Dumont
+France Sandie Mbock Bathy
+France Ouleymata Philippe
+Netherlands Britt Koolhaas
+Belgium Nicky Gorp
+Italy Cristiana Sabatino
+Spain Gisela Corral
+Russia Maria Kuzhela
+Russia Natalia Ishchenko
+Denmark Anne Rasmussen
+Spain Irina Rodriguez
+Norway Ingrid Stoltenberg
+Portugal Tatiana Pinto
+Italy Alia Adami
+Finland Brita Haukio
+---dataBOutput---
+Afghanistan 1
+America 7
+Australia 5
+Belgium 5
+Denmark 2
+England 5
+Finland 1
+France 6
+Germany 6
+Iraq 1
+Italy 4
+Japan 2
+Korea 1
+Malaysia 1
+Myanmar 1
+Netherlands 3
+Norway 11
+Poland 1
+Portugal 2
+Romania 1
+Russia 7
+Singapore 2
+Spain 5
+Syria 1
+Taiwan 3
+Turkey 6

@@ -22,7 +22,7 @@ class GetLikeController extends Controller
             'post_id.exists' => '貼文不存在',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 403);
+            return response()->json(['error' => $validator->errors()->first()], 402);
         }
 
         $user_post_like = UserLike::where([

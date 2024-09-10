@@ -18,6 +18,10 @@ class Post extends Model
     {
         return $this->belongsTo(UvaTopic::class);
     }
+    public function UvaCode()
+    {
+        return $this->belongsTo(UvaCode::class);
+    }
     public function Comment()
     {
         return $this->hasMany(Comment::class);
@@ -27,9 +31,13 @@ class Post extends Model
         return $this->hasMany(UserLike::class);
     }
 
-    public function UserCollect()
+    public function UserSubscribe()
     {
-        return $this->hasMany(UserCollect::class);
+        return $this->hasMany(UserSubscribe::class);
+    }
+    public function PostView()
+    {
+        return $this->hasMany(PostView::class);
     }
     public function HandInAssignment()
     {

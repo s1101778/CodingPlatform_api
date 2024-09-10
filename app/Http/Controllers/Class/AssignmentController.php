@@ -171,9 +171,7 @@ class AssignmentController extends Controller
     {
         $validator = Validator::make($data->all(), [
             'assignment_id' => 'required|exists:assignments,id',
-            'check' => 'required'
         ], [
-            'check.required' => '未填入確認刪除字樣',
             'required' => '欄位沒有填寫完整!',
             'assignment_id.exists' => '作業不存在',
         ]);
@@ -185,9 +183,6 @@ class AssignmentController extends Controller
         }
 
         $assignment = Assignment::find($data->assignment_id);
-        if($data->check != '確認刪除' . $assignment->name){
-            return response()->json(['error' => '確認字樣不同 請重新輸入'], 402);
-        }
 
         File::deleteDirectory('uploads/assignment/' . $data->assignment_id);
         Assignment::find($data->assignment_id)->delete();
