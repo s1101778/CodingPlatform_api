@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('Taged_user_id');
             $table->foreign('Taged_user_id')->references('id')->on('users')->onDelete('cascade')->comment('外鍵_被Tag者ID');
             $table->foreignId('post_id')->constrained()->onDelete('cascade')->comment('外鍵_文章ID');
-            $table->foreignId('comment_id')->constrained()->onDelete('cascade')->comment('外鍵_留言ID');
+            $table->foreignId('comment_id')->nullable()->constrained()->onDelete('cascade')->comment('外鍵_留言ID');
             $table->unsignedTinyInteger('viewed')->default(0);
             $table->timestamps();
         });

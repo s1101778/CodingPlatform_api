@@ -22,6 +22,10 @@ class Post extends Model
     {
         return $this->belongsTo(UvaCode::class);
     }
+    public function UserSubscribe()
+    {
+        return $this->hasMany(UserSubscribe::class, 'author_id', 'id');
+    }
     public function Comment()
     {
         return $this->hasMany(Comment::class);
@@ -29,11 +33,6 @@ class Post extends Model
     public function UserLike()
     {
         return $this->hasMany(UserLike::class);
-    }
-
-    public function UserSubscribe()
-    {
-        return $this->hasMany(UserSubscribe::class);
     }
     public function PostView()
     {
