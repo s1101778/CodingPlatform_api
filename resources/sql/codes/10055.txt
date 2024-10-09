@@ -1,0 +1,29 @@
+---code---
+//uva10055
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    long long int n, m;
+    while (cin >> n >> m) {
+        cout << abs(m - n)<<endl;
+    }
+    return 0;
+}
+---dataInput---
+10 12
+10 14
+100 200
+---dataOutput---
+2
+4
+100
+---dataAInput---
+未考過此題
+---dataAOutput---
+未考過此題
+---dataBInput---
+未考過此題
+---dataBOutput---
+未考過此題

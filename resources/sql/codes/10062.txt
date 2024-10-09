@@ -1,48 +1,62 @@
 ---code---
 //uva10062
-#include<cstdio>
-#include<cstring>
-#include<algorithm>
-
+#include <iostream>
+#include <algorithm>
+#include <string>
 using namespace std;
 
-struct word{
-	int code, time;
-};
+int main(){
+    string str;
+    int count = 0;
+    while (getline(cin, str)){
+        if (count > 0){
+            cout << endl;
+        }
+        int freq[95]; // ascii 126~32
+        for (int i = 0; i < 95; i++){
+            freq[i] = 10000;
+        }
 
-bool cmp(struct word a, struct word b) {
-	if(a.time != b.time)
-		return a.time < b.time;
-	else
-		return a.code > b.code;
-}
+        // calculate the frequency of each char
+        int tmp = 0;
+        for (int i = 0; i < str.length(); i++){
+            tmp = 126 - (int)str[i];
+            if (freq[tmp] == 10000){
+                freq[tmp] = 0;
+            }
+            freq[tmp]++;
+        }
 
-int main(void) {
-	int i = 0, j, temp[130];
-	char qu[1005];
-	struct word ans[130];
-	while(gets(qu) != NULL) {
-		if(i)
-			printf("\n");
-		for(i = 0; i < 130; i++)
-			temp[i] = 0;
-		for(i = 0; i < strlen(qu); i++)
-			temp[(int)qu[i]]++;
-		
-		for(i = 32, j = 0; i < 128; i++) {
-			if(temp[i]) {
-				ans[j].code = i;
-				ans[j].time = temp[i];
-				j++;
-			}
-		}
-		sort(ans, ans + j, cmp);
-		for(i = 0; i < j; i++)
-			printf("%d %d\n", ans[i].code, ans[i].time);
-		i = 1;
-	}
-	return 0;
+        // find the least frequency char and print it
+        int index;
+        index = distance(freq, min_element(freq, freq + 95));
+        tmp = freq[index];
+        while (tmp != 10000){
+            for (int i = index; i < 95; i++){
+                if (freq[i] == tmp){
+                    cout << 126 - i << " " << freq[i] << endl;
+                    freq[i] = 10000;
+                }
+            }
+            index = distance(freq, min_element(freq, freq + 95));
+            tmp = freq[index];
+        }
+        count++;
+    }
+    return 0;
 }
+---dataInput---
+AAABBC
+122333
+---dataOutput---
+67 1
+66 2
+65 3
+
+49 1
+50 2
+51 3
+
 ---dataAInput---
 AAABBC
 122333
@@ -54,7 +68,6 @@ GI1sjmq~"ytH&Z<^y[ |_k,BF\WES\os)[(=f($kxCm9f'hlW;/\`]V.j&xp[Sd~6@[2axK+z$:,^s'!
 |0?Kx1xKV(r7;j?p+jymp|}|Ci%e5$D<fE<J` N _6~BFjs;m"ID/ODlE;rX*}b1roFD@TSr2kOm*]=y%oe/c`?vNVa|j#!}W^05TaB5JL t6J2vI%$b^8|b>MC=#[DbT\<ShP1l\.fG*y3j;@mU_J\w}<@&+2lM736g($(PRO#(" hQKi1$.73i[v87~(:oV(U{0@(F\X EVl7+o}K0*mq=K^7k*pPJGkI1JQ+'~*me=(z#D$PrI*8E!Fg@t!BSy'B5zd./Q3>+;)}zDbOf<IEcn`qE)|F;AS5GJ(geOWS=/h\t#*!*hpWbBp&BJ3=-*?3&rX+/O*z?+^!$*.:Ua9@M'EP|}3[v8Na%:An%aqOvG,vqn3+'1(dBfcC_8p57!dZ{X?rvF@(Sds=N5-Q.RmgK{EB p3^6 [`+}%5@T0eZ3NFdU,oM,he5q>k9O]blA'@L{]HMPN,.*^UogwUK:&70}yg/u,=3^MkakE'A) hm]u? +Db|
 >u'}Y}+>leg#]z#yC>:lZ*r'bjhZ'XeGKW=\ij!8[|2Z_PbP?`L_(BhA `ezMgxBbw=T%HEPr]N~N[Rlf*f#\}w-\DP+419gY.J[1`d8JLOmed|w9GVoDs'/E F9[QH@$V >Ca{$ Ga@PbYb)Dkh+UT8IK]_)i\=lbJ7:yK$jcMb'oa`,Lo @`9eu4R-g~E|>x3Uo\pcg%G|(>IRo9E,_&.?u~zO%Vwl}W8^D|Z,jL[i\^@jx ?x(/|q817/2iyg}P\h x QT5K4HoYrCjt6COnQ3wL~P*jh9PQGow{i'Vs&E"R>SOB@D3IbZ; '7,t1d($:Eg=A\Nv'1+B35L+i^JGch]S ~@H>Of1s26K08.^W8,Sa-+>)A!r<Ad<Wi9-i<gGE9[/7Ht#;:>@g=&+|GC7X=]dn36%'aB$%b<(t'D!+)J!nC\2/2(0KHE&I; d ;g)&KYhZR&yJOwYu4;Fp&.@oi"?[\)z/.yl"jI$vw@X'ipT~fG9:L$#)>0BqOJAPJM?)tP;5.[uR]H]*!UcPgb"(MZHW4L2XA(~_ymh3S=v@oZ=3c~F<ZD@;G"L7eZ'\p1+{9Q*yzRHnWTJ.!1S(1@A&uK)5[C%`Q$-V cwD&QF&NjdIC#lAT/V-?CW*9pjBu2L`[@zG54/!m-wRNg^&*=J,$:^3M_);Nwsw04D9L?8#3e3O>T%Ok >N0VTM
 xjK:`A`E3sVaLpxn#|y-[rJaE_oT-D[ewtu|Yb1mPm&9d[4E$wucz[Y1)H-HEK/2!4P;G&hsmqCxb|+;[=nQw3Nn`jO%"Soe k!.J/9pd=:hV|`OoqW:p@hNw;a<hmD28u*-8M8]SA)u!#A:5;Zsi(l'v2C;1gd/N]rs<#3uy5uQTeQHiv~Ub-=]$CxBr(u^r]8{vyvU(]D#\qv.mxHF8/&6$a9h)j1;~Y_$@U78VAfSVZ=?1B5U<B/zDV*b@,q'jsKslj8#<b%TiDa@zoAD#\qPF`edY_VQB%?R.VN{q9D~.#^$W|(xf3Q4(!IF"76K|Q~0>}+%U2F4!jJ25Yin!(u"h%S@$MqN<{S28|.o)^vQ[aQD4\s,yjJ;,9rpZV+}7)uR[n?i{1gLZ-kJ3IX.EFV[ .Adu;v<;za:9O1H7fbg2O+Q6)r,Mm.!5go6 h@Y@\q,Z#8L?]TvG*d,WK5E|A{Hrd[,BA"g-zF_jr`x!7)jcZNjZP2PYf-okJ2m~F9\WCixa4iEY`|e`(?JM*?K+_RO-;7=ZWkM'Sg).v<1Kp,zi^en|Uu8H.e0w5!9z}bslJ+1NF1m+3zaDxS84<NibX 2*-&9($y$hokgir1E,OROr"5OZ,l}$Q(a@Ar;Zj_x}e=Ib1 3;PeF@lI%z'&I }bf[9LI3" Ps4R[}h86[.mwd~l09(-%uQA(MFO %|h(F(oshgFThQw`Tq=n#.ATc>M<`YB5sk<Wi(2W,9beJ-TaTE\5p+qK`~|(er_W=_s_q$#%9ci j\~G+7J<jPG@PJ_-0iTf~bC-<v7s=f@>,`6a9T7b]LV;ef.04_E8_1&9_ b~7|3RM~vUyZ^H[1[/X=0H0>ryJ7zI[j ;DU`g{$YwKI,V'w?>"rexRoNLOoW)srP7,`)OZY3}"[cuHIK&#91#&QtT02R,{- /%k6BKg%pg:%fUprAdN
-
 ---dataAOutput---
 67 1
 66 2
@@ -590,8 +603,8 @@ xjK:`A`E3sVaLpxn#|y-[rJaE_oT-D[ewtu|Yb1mPm&9d[4E$wucz[Y1)H-HEK/2!4P;G&hsmqCxb|+;
 114 16
 91 16
 57 16
----dataBInput---
 
+---dataBInput---
 AAABBC
 122333
 CPE test is good.
@@ -1139,4 +1152,3 @@ C `[9&/uDzr.+! o,sSDyhHFj|f.w.vq%EMc;nX9B6@&V8ip=Dc}S:}:(08~-S9ol !Y6=N4=8v"x^%{
 49 15
 115 17
 121 18
-87 19

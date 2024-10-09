@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie','proxy/get_uva_pdf/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie','proxy/get_uva_pdf/*', 'proxy/get_uva_code_pdf/*'],
 
     'allowed_methods' => ['*'],
 

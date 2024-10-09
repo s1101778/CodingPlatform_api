@@ -19,9 +19,12 @@ return new class extends Migration
             $table->text('topic_url');
             $table->integer('star')->nullable();
             $table->text('code')->nullable();
-            $table->text('data')->nullable();
-            $table->text('data_a')->nullable();
-            $table->text('data_b')->nullable();
+            $table->text('data_input')->nullable();
+            $table->text('data_output')->nullable();
+            $table->text('data_a_input')->nullable();
+            $table->text('data_a_output')->nullable();
+            $table->text('data_b_input')->nullable();
+            $table->text('data_b_output')->nullable();
             $table->timestamps();
         });
     }

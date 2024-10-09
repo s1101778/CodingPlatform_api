@@ -23,7 +23,6 @@ return new class extends Migration {
             $table->text('video_id');
             $table->text('content');
             $table->integer('likes')->default(0);
-            $table->integer('subscribes')->default(0);
             $table->integer('views')->default(0);
             $table->unsignedBigInteger('comments_count')->default(0);
             $table->text('code')->nullable();
