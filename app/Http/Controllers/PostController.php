@@ -16,7 +16,51 @@ use App\Models\PostView;
 use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
-
+/**
+ * @OA\Post(
+ *      path="/forum/post",
+ *      operationId="postVideo",
+ *      tags={"Post"},
+ *      summary="Post a video",
+ *      description="Post a video with the given details",
+ *      @OA\RequestBody(
+ *          required=true,
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(
+ *                  property="serial",
+ *                  type="string",
+ *                  description="serial"
+ *              ),
+ *              @OA\Property(
+ *                  property="video_url",
+ *                  type="string",
+ *                  description="Youtube video url"
+ *              ),
+ *              @OA\Property(
+ *                  property="content",
+ *                  type="string",
+ *                  description="Video content"
+ *              ),
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=200,
+ *          description="Successful post video",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(
+ *                  property="id",
+ *                  type="integer",
+ *                  description="Post ID"
+ *              ),
+ *          )
+ *      ),
+ *      security={
+ *          {"bearerAuth": {}}
+ *      }
+ * )
+ * */
 class PostController extends Controller
 {
     public function user_post_check(Request $data)
@@ -36,11 +80,11 @@ class PostController extends Controller
             'serial.exists' => '題目編號不存在',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 402);
+            return response()->json(['error' => $validator->errors()->first()], 422);
         }
         preg_match('#(?<=v=)[a-zA-Z0-9-]+(?=&)|(?<=v\/)[^&\n]+(?=\?)|(?<=v=)[^&\n]+|(?<=youtu.be/)[^&\n]+#', $data->video_url, $matches);
         if (count($matches) == 0) {
-            return response()->json(['error' => '請放入正確的 youtube 影片網址'], 402);
+            return response()->json(['error' => '請放入正確的 youtube 影片網址'], 422);
         }
         $video_id = $matches[0];
         $video_pic_url = 'https://img.youtube.com/vi/' . $video_id . '/maxresdefault.jpg';
@@ -48,8 +92,7 @@ class PostController extends Controller
         if (!$headers || $headers[0] == 'HTTP/1.1 404 Not Found') {
             $video_pic_url = 'https://img.youtube.com/vi/' . $video_id . '/mqdefault.jpg';
         }
-
-        if (Post::find($data->post_id)) {
+        if (Post::find($data->post_id)) {   // 更新影片
             if (Post::find($data->post_id)->user_id == Auth::user()->id) {
                 Post::find($data->post_id)->update([
                     'uva_topic_id' => UvaTopic::get_uva_topic_id($data->serial),
@@ -61,10 +104,12 @@ class PostController extends Controller
                     'code_type' => $data->code_type,
                     'code_editor_type' => $data->code_editor_type,
                 ]);
-
+                // 取得目前登入使用者（透過Auth::user()）所在的多個班級（UserClass）中的所有作業
                 $assignment = Auth::user()->UserClass->map->CodingClass->map->Assignment->flatten(1);
-                $now = Carbon::now();
-                $assignment_update = 0;
+                $now = Carbon::now();   // 取得當前時間
+                $assignment_update = 0; // 追蹤是否有作業被更新
+
+                // 處理使用者提交的作業時間，檢查作業的時間範圍，並根據提交的資訊更新對應的TempPost記錄
                 $assignment = $assignment->map(function ($item, $key) use ($now, $data, $video_id, $video_pic_url, &$assignment_update) {
                     if ($now->isAfter($item->start_at) && $now->isBefore($item->end_at)) {
                         if ($item->HandInAssignment?->map->TempPost?->map->post_id->first() == $data->post_id) {
@@ -88,17 +133,18 @@ class PostController extends Controller
                     return response()->json(['success' => '成功更新影片', 'post_id' => $data->post_id], 200);
                 }
             } else {
-                return response()->json(['error' => '此影片並非您發布，請重新輸入'], 200);
+                return response()->json(['error' => '此影片並非您發布，請重新輸入'], 403);
             }
-
-        } else {
+        } else {  // 新增影片
             $postlimit = Auth::user()->PostLimit->first();
             if ($postlimit) {
                 $now = Carbon::now();
-                if ($now->isBefore($postlimit->end_at)) {
-                    return response()->json(['error' => '一分鐘內僅限發布一則影片'], 402);
-                } else {
-                    $postlimit->delete();
+                if ($postlimit->type === 'post') {
+                    if ($now->isBefore($postlimit->end_at)) {
+                        return response()->json(['error' => '一分鐘內僅限發布一則影片'], 429);
+                    } else {
+                        $postlimit->delete();
+                    }
                 }
             }
             $post = Post::create([
@@ -114,7 +160,8 @@ class PostController extends Controller
             ]);
             PostLimit::create([
                 'user_id' => Auth::user()->id,
-                'end_at' => Carbon::now()->addMinutes(1)
+                'end_at' => Carbon::now()->addMinutes(1),
+                'type' => 'post',
             ]);
             return response()->json(['success' => '成功創立影片', 'post_id' => $post->id], 200);
         }
@@ -129,115 +176,19 @@ class PostController extends Controller
             'post_id.exists' => '影片不存在',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 402);
+            return response()->json(['error' => $validator->errors()->first()], 422);
         }
-        $Post = Post::where([
+        $post = Post::where([
             'id' => $data->post_id
         ]);
-        if (Auth::user()->id != $Post->first()->user_id) {
-            return response()->json(['error' => '權限不符'], 200);
+        if (Auth::user()->id != $post->first()->user_id) {
+            return response()->json(['error' => '權限不符'], 403);
         } else {
-            $Post->delete();
+            $post->delete();
             return response()->json(['success' => '成功刪除影片'], 200);
         }
     }
-    public function like_post(Request $data)
-    {
-        $lock = Cache::lock('key', 5);
-        if (!$lock->get()) {
-            return response()->json(['error' => '操作過於頻繁'], 402);
-        }
-        $validator = Validator::make($data->all(), [
-            'post_id' => 'required|exists:posts,id',
-            'dislike_or_like' => 'required',
-        ], [
-            'required' => '欄位沒有填寫完整!',
-            'post_id.exists' => '影片不存在',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 402);
-        }
-        $dislike_or_like = $data->dislike_or_like;
-        if ($dislike_or_like != 1 && $dislike_or_like != -1) {
-            return response()->json(['error' => 'dislike_or_like只限於-1 or 1'], 402);
-        }
-        $user_like = UserLike::where([
-            'user_id' => Auth::user()->id,
-            'post_id' => $data->post_id,
-        ])->whereNull('comment_id')->first();
 
-        $post = Post::find($data->post_id);
-
-        if ($user_like == null) {
-            UserLike::create([
-                'user_id' => Auth::user()->id,
-                'post_id' => $data->post_id,
-                'dislike_or_like' => $dislike_or_like,
-            ]);
-            if ($dislike_or_like == 1) {
-                $post->increment('likes');
-            } else if ($dislike_or_like == -1) {
-                $post->decrement('likes');
-            }
-        } else {
-            if ($dislike_or_like == 1 && $user_like->dislike_or_like == -1) {
-                $user_like->delete();
-                $post->increment('likes');
-            } else if ($dislike_or_like == -1 && $user_like->dislike_or_like == 1) {
-                $user_like->delete();
-                $post->decrement('likes');
-            }
-        }
-        $user_like = UserLike::where([
-            'user_id' => Auth::user()->id,
-            'post_id' => $data->post_id,
-        ])->whereNull('comment_id')->first();
-
-        $now_post_like = Post::find($data->post_id)->likes;
-        $lock->release();
-
-        return response()->json(['success' => '更新喜歡狀態成功', 'user_post_like' => $user_like?->dislike_or_like, 'now_post_like' => $now_post_like], 200);
-    }
-
-    public function get_like_post(Request $data)
-    {
-        $user = Auth::user();
-
-        // 取得屬於當前用戶且 dislike_or_like 等於 1 的 UserLike 記錄
-        $userLikes = UserLike::where('user_id', $user->id)->get();
-
-        // 檢查是否有喜歡
-        if ($userLikes->isEmpty()) {
-            return response()->json(['error' => '尚未喜歡'], 200);
-        }
-
-        // 提取喜歡的影片
-        $posts = $userLikes->pluck('post');
-
-        $user_account = $data->user_account;
-
-        if ($user_account) {
-            $user = User::where('account', $user_account)->first();
-
-            if (!$user) {
-                return response()->json(['error' => '該帳號不存在'], 404);
-            }
-
-            $user_id = $user->id;
-            $posts = $posts->where('user_id', $user_id);
-
-            if ($posts->isEmpty()) {
-                return response()->json(['error' => '使用者尚未瀏覽該帳號的影片'], 402);
-            }
-        }
-        $posts = $posts->filter()->values(); //清null
-        $posts = $posts->map(
-            function ($item, $key) {
-                return self::tidy_post($item);
-            }
-        );
-        return response()->json(['success' => $posts], 200);
-    }
 
 
     // 取得用戶的影片
@@ -253,131 +204,6 @@ class PostController extends Controller
     }
 
 
-    // 訂閱影片功能
-    public function subscribe_post(Request $data)
-    {
-        $validator = Validator::make($data->all(), [
-            'author_id' => 'required|exists:posts,id',
-            'subscribe' => 'required'
-        ], [
-            'required' => '欄位沒有填寫完整',
-            'author_id.exists' => '影片不存在',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 402);
-        }
-        $subscribe = $data->subscribe;
-        if ($subscribe != 0 && $subscribe != 1) {
-            return response()->json(['error' => 'subscribe 只限於 0 or 1'], 402);
-        }
-        $user_subscribe = UserSubscribe::where([
-            'user_id' => Auth::user()->id,
-            'author_id' => $data->author_id,
-        ])->first();
-        $post = Post::find($data->author_id);
-        if ($user_subscribe === null) {
-            if ($subscribe == 1) {
-                UserSubscribe::create([
-                    'user_id' => Auth::user()->id,
-                    'author_id' => $data->author_id,
-                    'subscribe' => $subscribe,
-                ]);
-                $post->increment('subscribes');
-                Auth::user()->increment('subscriptions');
-            }
-
-        } else {
-            if ($subscribe == 0 && $user_subscribe->subscribe == 1) {
-                $user_subscribe->delete();
-                $post->decrement('subscribes');
-                Auth::user()->decrement('subscriptions');
-            }
-        }
-        $user_subscribe = UserSubscribe::where([
-            'user_id' => Auth::user()->id,
-            'author_id' => $data->author_id,
-        ])->first();
-
-        $now_post_subscribe = Post::find($data->author_id)->subscribes;
-
-        return response()->json(['success' => '更新收藏狀態成功', 'user_post_subscribe' => $user_subscribe?->subscribe, 'now_post_subscribe' => $now_post_subscribe], 200);
-
-    }
-
-    
-    public function get_subscribe_post(Request $data)
-    {
-        // 獲取當前用戶的 ID
-        $userId = Auth::id(); // 或者 Auth::user()->id
-
-        // 檢查是否提供了 user_account
-        if ($data->user_account) {
-            // 查詢該帳號的用戶
-            $user = User::where('account', $data->user_account)->first();
-
-            // 如果用戶不存在，返回錯誤
-            if (!$user) {
-                return response()->json(['error' => '該帳號不存在'], 404);
-            }
-
-            $userId = $user->id;
-        }
-
-        // 查詢該用戶的訂閱記錄
-        $postsQuery = UserSubscribe::where('user_id', $userId);
-        $posts = $postsQuery->get(); // 使用 get() 方法獲取結果
-
-        // 檢查是否有訂閱記錄
-        if ($posts->isEmpty()) {
-            if ($data->user_account) {
-                return response()->json(['error' => '使用者尚未收藏該帳號的影片'], 402);
-            } else {
-                return response()->json(['error' => '尚未收藏'], 200);
-            }
-        }
-
-        // 過濾掉空值並映射處理
-        $posts = $posts->filter()->map(function ($item) {
-            return self::tidy_post($item);
-        });
-
-        return response()->json(['success' => $posts->values()], 200);
-    }
-
-    public function get_post_view(Request $data)
-    {
-        $postView = Auth::user()->PostView;
-
-        if ($postView->isEmpty()) {
-            return response()->json(['error' => '尚未瀏覽影片'], 402);
-        }
-        $posts = $postView->pluck('post');
-
-
-        $user_account = $data->user_account;
-
-        if ($user_account) {
-            $user = User::where('account', $user_account)->first();
-
-            if (!$user) {
-                return response()->json(['error' => '該帳號不存在'], 404);
-            }
-
-            $user_id = $user->id;
-            $posts = $posts->where('user_id', $user_id);
-
-            if ($posts->isEmpty()) {
-                return response()->json(['error' => '使用者尚未瀏覽該帳號的影片'], 402);
-            }
-        }
-        $posts = $posts->filter()->values(); //清null
-        $posts = $posts->map(
-            function ($item, $key) {
-                return self::tidy_post($item);
-            }
-        );
-        return response()->json(['success' => $posts], 200);
-    }
 
     public function get_post_auth(Request $data)
     {
@@ -387,7 +213,7 @@ class PostController extends Controller
                 $post = Post::find($post_id);
                 $posts = self::tidy_post($post);
             } catch (\Throwable $th) {
-                return response()->json(['success' => '影片不存在'], 402);
+                return response()->json(['success' => '影片不存在'], 404);
             }
 
             $user_id = Auth::user()->id;
@@ -398,11 +224,11 @@ class PostController extends Controller
             //     // 如果記錄存在，更新 visited_at 字段
             //     $postview->update(['visited_at' => now()]);
             // } else {
-                PostView::create([
-                    'user_id' => $user_id,
-                    'post_id' => $post_id,
-                    // 'visited_at' => now(),
-                ]);
+            PostView::create([
+                'user_id' => $user_id,
+                'post_id' => $post_id,
+                // 'visited_at' => now(),
+            ]);
             // }
             $post->increment('views');
         }
@@ -417,7 +243,7 @@ class PostController extends Controller
                 $post = Post::find($post_id);
                 $posts = self::tidy_post($post);
             } catch (\Throwable $th) {
-                return response()->json(['success' => '影片不存在'], 402);
+                return response()->json(['success' => '影片不存在'], 404);
             }
             PostView::create([
                 'user_id' => null,
@@ -507,7 +333,7 @@ class PostController extends Controller
                     $posts = $posts->sortByDesc('created_at');
                     break;
             }
-            if($view_sort){
+            if ($view_sort) {
                 $posts = $posts->sortByDesc('views');
             }
             $posts = $posts->filter()->values(); //清null
@@ -518,9 +344,10 @@ class PostController extends Controller
             );
         }
         return response()->json(['success' => $posts], 200);
+
     }
 
-    public function get_temp_post(Request $data)
+    public function get_temp_post(Request $data)    // 返回影片相關資訊
     {
         $temp_post_id = $data->temp_post_id;
         $validator = Validator::make($data->all(), [
@@ -530,7 +357,7 @@ class PostController extends Controller
             'temp_post_id.exists' => 'temp影片不存在',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 402);
+            return response()->json(['error' => $validator->errors()->first()], 422);
         }
 
         $temp_post = TempPost::find($temp_post_id);
@@ -555,7 +382,7 @@ class PostController extends Controller
             'video_pic_url' => $item['video_pic_url'],
             'content' => $item['content'],
             'likes' => $item['likes'],
-            'subscribes' => $item['subscribes'],
+            //'subscribes' => $item['subscribes'],
             'views' => $item['views'],
             'comments_count' => $item['comments_count'],
             'code' => $item['code'],
@@ -565,4 +392,7 @@ class PostController extends Controller
             'updated_at' => $item['updated_at']->format('Y/m/d H:i:s'),
         ]);
     }
+
+
+
 }

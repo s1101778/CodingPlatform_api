@@ -19,14 +19,32 @@ use Illuminate\Support\Facades\Mail;
  *          description="Successful operation",
  *          @OA\JsonContent(
  *              type="array",
- *          
+ *              @OA\Items(   
+ *                  type="object",   
+ *                  @OA\Property(
+ *                      property="id",
+ *                      type="integer",
+ *                      description="User ID"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="name",
+ *                      type="string",
+ *                      description="User name"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="email",
+ *                      type="string",
+ *                      description="User email"
+ *                  )
+ *              )
  *          )
  *      ),
  *      security={
  *          {"bearerAuth": {}}
  *      }
  * )
- * * @OA\Info(
+ * 
+ * @OA\Info(
  *      version="1.0.0",
  *      title="CodingPlatform Documentation",
  *      description="CodingPlatform Documentation",
@@ -41,6 +59,7 @@ use Illuminate\Support\Facades\Mail;
  *      description="CodingPlatform API Server"
  * )
  */
+
 
 class Controller extends BaseController
 {

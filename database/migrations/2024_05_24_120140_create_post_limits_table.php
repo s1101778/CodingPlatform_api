@@ -5,8 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,6 +14,7 @@ return new class extends Migration
         Schema::create('post_limits', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade')->comment('外鍵_user_ID');
+            $table->string('type')->comment('影片或討論區類型'); // 添加 post 或 community 欄位
             $table->timestamp('end_at')->comment('限制結束時間');
             $table->timestamps();
         });

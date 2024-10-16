@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_comment_id')->nullable();
             $table->foreign('parent_comment_id')->references('id')->on('comments')->onDelete('cascade')->comment('外鍵_父comment_id');
             $table->integer('children_comment_count')->default(0);
-            $table->foreignId('post_id')->constrained()->onDelete('cascade')->comment('外鍵_文章ID');
+            $table->foreignId('post_id')->nullable()->constrained()->onDelete('cascade')->comment('外鍵_影片ID');
+            $table->foreignId('community_id')->nullable()->constrained()->onDelete('cascade')->comment('外鍵_討論ID');
             $table->text('content');
             $table->integer('likes')->default(0);
             $table->timestamps();

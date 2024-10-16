@@ -15,40 +15,13 @@ use App\Http\Controllers\UvaCodeController;
 use App\Http\Controllers\GetLikeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\GetTagController;
+use App\Http\Controllers\GetViewController;
+use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Models\UvaTopic;
 use Illuminate\Http\Request;
 
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-1. php artisan migrate
-2. php artisan db:seed --class=UvaTopicTableSeeder
-3. php artisan passport:install
-
-php artisan make:model Name --migration
-
-php artisan make:migration update_flights_table
-
-php artisan migrate
-php artisan migrate:rollback
-
-
-
-php artisan route:list 
-php artisan queue:clear
-sudo supervisorctl restart all
-supervisorctl reread
-supervisorctl update
-php artisan schedule:list 
-*/
 
 Route::get('proxy/get_uva_pdf/{serial}', [UvaController::class, 'get_uva_pdf']);
 Route::get('proxy/get_uva_code_pdf/{serial}', [UvaCodeController::class, 'get_uva_code_pdf']);
@@ -119,20 +92,23 @@ Route::prefix('forum')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::post('get_post_auth', [PostController::class, 'get_post_auth']);
         Route::post('post', [PostController::class, 'post']);
-        Route::post('get_user_post', [PostController::class, 'get_user_post']);
-        Route::post('like_post', [PostController::class, 'like_post']);
-        Route::post('subscribe_post', [PostController::class, 'subscribe_post']);
-        Route::post('get_subscribe_post', [PostController::class, 'get_subscribe_post']);
         Route::post('del_post', [PostController::class, 'del_post']);
+        Route::post('get_user_post', [PostController::class, 'get_user_post']);
         Route::post('comment', [CommentController::class, 'comment']);
-        Route::post('like_comment', [CommentController::class, 'like_comment']);
         Route::post('del_comment', [CommentController::class, 'del_comment']);
+        Route::post('like_post', [GetLikeController::class, 'like_post']);
+        Route::post('like_comment', [GetLikeController::class, 'like_comment']);
         Route::post('get_like', [GetLikeController::class, 'get_like']);
-        Route::post('get_like_post', [PostController::class, 'get_like_post']);
+        Route::post('get_like_post', [GetLikeController::class, 'get_like_post']);
+        Route::post('subscribe_post', [GetSubscribeController::class, 'subscribe_post']);
         Route::post('get_subscribe', [GetSubscribeController::class, 'get_subscribe']);
-        Route::post('get_post_view', [PostController::class, 'get_post_view']);
+        Route::post('get_subscribe_post', [GetSubscribeController::class, 'get_subscribe_post']);
+        Route::post('get_post_view', [GetViewController::class, 'get_post_view']);
         Route::post('get_tags', [GetTagController::class, 'get_tags']);
         Route::post('all_tag_view', [GetTagController::class, 'all_tag_view']);
+        Route::post('community', [CommunityController::class, 'community']);
+        Route::post('del_community', [CommunityController::class, 'del_community']);
+        Route::post('get_user_community', [CommunityController::class, 'get_user_community']);
     });
     Route::get('get_uva', [UvaController::class, 'get_uva']);
     Route::get('get_uva_code', [UvaCodeController::class, 'get_uva_code']);
@@ -142,8 +118,11 @@ Route::prefix('forum')->group(function () {
     Route::post('get_children_comment', [CommentController::class, 'get_children_comment']);
     Route::post('check_is_children_comment', [CommentController::class, 'check_is_children_comment']);
     Route::post('tag_viewed', [GetTagController::class, 'tag_viewed']);
+    Route::post('get_community', [CommunityController::class, 'get_community']);
+    Route::post('get_all_community', [CommunityController::class, 'get_all_community']);
 });
 
+Route::post('search-suggestions', [SearchController::class, 'suggestions']);
 
 Route::get('sendmail', [PostController::class, 'post']);
 

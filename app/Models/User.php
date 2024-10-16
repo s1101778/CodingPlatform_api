@@ -53,6 +53,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+    public function Community()
+    {
+        return $this->hasMany(Community::class);
+    }
     public function UserLike()
     {
         return $this->hasMany(UserLike::class);
@@ -85,4 +89,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(PostLimit::class);
     }
-}   
+}

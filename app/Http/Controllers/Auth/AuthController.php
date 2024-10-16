@@ -11,7 +11,72 @@ use App\Http\Controllers\Controller;
 use Image;
 use Illuminate\Support\Facades\Storage;
 
-
+/**
+ * @OA\Post(
+ *      path="/auth/register",
+ *      operationId="registerUser",
+ *      tags={"Users"},
+ *      summary="Register a new user",
+ *      description="Registers a new user with the given details",
+ *      @OA\RequestBody(
+ *          required=true,
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(
+ *                  property="name",
+ *                  type="string",
+ *                  description="User name"
+ *              ),
+ *              @OA\Property(
+ *                  property="account",
+ *                  type="string",
+ *                  description="User account"
+ *              ),
+ *              @OA\Property(
+ *                  property="email",
+ *                  type="string",
+ *                  description="User email"
+ *              ),
+ *              @OA\Property(
+ *                  property="password",
+ *                  type="string",
+ *                  description="User password"
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *          response=200,
+ *          description="Successful registration",
+ *          @OA\JsonContent(
+ *              type="object",
+ *              @OA\Property(
+ *                  property="id",
+ *                  type="integer",
+ *                  description="User ID"
+ *              ),
+ *              @OA\Property(
+ *                  property="name",
+ *                  type="string",
+ *                  description="User name"
+ *              ),
+ *              @OA\Property(
+ *                  property="account",
+ *                  type="string",
+ *                  description="User account"
+ *              ),
+ *              @OA\Property(
+ *                  property="email",
+ *                  type="string",
+ *                  description="User email"
+ *              )
+ *          )
+ *      ),
+ *      security={
+ *          {"bearerAuth": {}}
+ *      }
+ * )
+ * */
+ 
 class AuthController extends Controller
 {
     public function isadmin()
@@ -33,7 +98,7 @@ class AuthController extends Controller
             'email.unique' => '信箱已被使用',
         ]);
         if ($validator->fails())
-            return response()->json(['error' => $validator->errors()->first()], 402);
+            return response()->json(['error' => $validator->errors()->first()], 422);
         
         $user = User::create([
             'name' => $data->name,

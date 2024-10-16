@@ -22,4 +22,8 @@ class Comment extends Model
     {
         return $this->hasMany(UserLike::class);
     }
+    public function Community()
+    {
+        return $this->belongsTo(Community::class);
+    }
 }
