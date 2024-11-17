@@ -1,0 +1,406 @@
+---code---
+//uva10235
+#include<iostream>
+using namespace std;
+
+int com[1000000];
+int main() {
+	for(int i = 2; i < 1000; i++) {
+		if(com[i])
+			continue;
+		for(int j = i + i; j < 1000000; j += i)
+			com[j] = 1;
+	}
+	int n, rn;
+	while(cin >> n) {
+		int sn = n; 
+		for(rn = 0; n; n /= 10) rn = rn * 10 + (n % 10);
+		if(com[sn]) cout << sn << " is not prime.";
+		else if(com[rn]) cout << sn << " is prime.";
+		else if(sn == rn) cout << sn << " is prime.";
+		else cout << sn << " is emirp.";
+		cout << endl;
+	}
+	return 0;
+}
+---dataAInput---
+10
+5
+9
+8
+4
+3
+2
+7
+2
+10
+5
+5
+7
+8
+5
+9
+4
+4
+10
+94
+61
+28
+66
+57
+99
+45
+71
+38
+59
+59
+83
+73
+53
+17
+11
+88
+79
+28
+667
+466
+533
+655
+644
+800
+553
+345
+879
+4189
+3663
+5789
+4024
+2638
+8319
+2048
+2601
+7995
+63307
+90065
+79732
+54566
+53190
+95273
+28990
+43263
+58322
+54701
+93598
+13091
+90531
+85729
+61881
+50800
+13516
+52515
+24850
+375010
+653834
+696919
+847599
+262144
+845875
+110603
+182861
+303017
+649045
+101622
+199547
+911186
+728662
+596023
+628089
+741945
+130765
+900236
+---dataAOutput---
+10 is not prime.
+5 is prime.
+9 is not prime.
+8 is not prime.
+4 is not prime.
+3 is prime.
+2 is prime.
+7 is prime.
+2 is prime.
+10 is not prime.
+5 is prime.
+5 is prime.
+7 is prime.
+8 is not prime.
+5 is prime.
+9 is not prime.
+4 is not prime.
+4 is not prime.
+10 is not prime.
+94 is not prime.
+61 is prime.
+28 is not prime.
+66 is not prime.
+57 is not prime.
+99 is not prime.
+45 is not prime.
+71 is emirp.
+38 is not prime.
+59 is prime.
+59 is prime.
+83 is prime.
+73 is emirp.
+53 is prime.
+17 is emirp.
+11 is prime.
+88 is not prime.
+79 is emirp.
+28 is not prime.
+667 is not prime.
+466 is not prime.
+533 is not prime.
+655 is not prime.
+644 is not prime.
+800 is not prime.
+553 is not prime.
+345 is not prime.
+879 is not prime.
+4189 is not prime.
+3663 is not prime.
+5789 is not prime.
+4024 is not prime.
+2638 is not prime.
+8319 is not prime.
+2048 is not prime.
+2601 is not prime.
+7995 is not prime.
+63307 is not prime.
+90065 is not prime.
+79732 is not prime.
+54566 is not prime.
+53190 is not prime.
+95273 is prime.
+28990 is not prime.
+43263 is not prime.
+58322 is not prime.
+54701 is not prime.
+93598 is not prime.
+13091 is not prime.
+90531 is not prime.
+85729 is not prime.
+61881 is not prime.
+50800 is not prime.
+13516 is not prime.
+52515 is not prime.
+24850 is not prime.
+375010 is not prime.
+653834 is not prime.
+696919 is not prime.
+847599 is not prime.
+262144 is not prime.
+845875 is not prime.
+110603 is emirp.
+182861 is not prime.
+303017 is not prime.
+649045 is not prime.
+101622 is not prime.
+199547 is not prime.
+911186 is not prime.
+728662 is not prime.
+596023 is not prime.
+628089 is not prime.
+741945 is not prime.
+130765 is not prime.
+900236 is not prime.
+---dataBInput---
+6
+9
+9
+6
+7
+3
+2
+9
+9
+4
+9
+4
+3
+8
+6
+7
+7
+8
+2
+97
+24
+12
+55
+70
+73
+75
+84
+10
+67
+88
+56
+44
+39
+75
+62
+19
+25
+75
+602
+193
+733
+137
+300
+570
+688
+105
+371
+2491
+4311
+4867
+3208
+7605
+1533
+5624
+6813
+9110
+89895
+33439
+29437
+18592
+77052
+90432
+64190
+88281
+49605
+34528
+15983
+40627
+69716
+52868
+62939
+27387
+91678
+70898
+30809
+588545
+967990
+398882
+559837
+810537
+573932
+393269
+872030
+382981
+818386
+830706
+909428
+318403
+498234
+664738
+413484
+756831
+757428
+875497
+---dataBOutput---
+
+6 is not prime.
+9 is not prime.
+9 is not prime.
+6 is not prime.
+7 is prime.
+3 is prime.
+2 is prime.
+9 is not prime.
+9 is not prime.
+4 is not prime.
+9 is not prime.
+4 is not prime.
+3 is prime.
+8 is not prime.
+6 is not prime.
+7 is prime.
+7 is prime.
+8 is not prime.
+2 is prime.
+97 is emirp.
+24 is not prime.
+12 is not prime.
+55 is not prime.
+70 is not prime.
+73 is emirp.
+75 is not prime.
+84 is not prime.
+10 is not prime.
+67 is prime.
+88 is not prime.
+56 is not prime.
+44 is not prime.
+39 is not prime.
+75 is not prime.
+62 is not prime.
+19 is prime.
+25 is not prime.
+75 is not prime.
+602 is not prime.
+193 is prime.
+733 is emirp.
+137 is prime.
+300 is not prime.
+570 is not prime.
+688 is not prime.
+105 is not prime.
+371 is not prime.
+2491 is not prime.
+4311 is not prime.
+4867 is not prime.
+3208 is not prime.
+7605 is not prime.
+1533 is not prime.
+5624 is not prime.
+6813 is not prime.
+9110 is not prime.
+89895 is not prime.
+33439 is not prime.
+29437 is prime.
+18592 is not prime.
+77052 is not prime.
+90432 is not prime.
+64190 is not prime.
+88281 is not prime.
+49605 is not prime.
+34528 is not prime.
+15983 is not prime.
+40627 is prime.
+69716 is not prime.
+52868 is not prime.
+62939 is prime.
+27387 is not prime.
+91678 is not prime.
+70898 is not prime.
+30809 is emirp.
+588545 is not prime.
+967990 is not prime.
+398882 is not prime.
+559837 is not prime.
+810537 is not prime.
+573932 is not prime.
+393269 is not prime.
+872030 is not prime.
+382981 is not prime.
+818386 is not prime.
+830706 is not prime.
+909428 is not prime.
+318403 is emirp.
+498234 is not prime.
+664738 is not prime.
+413484 is not prime.
+756831 is not prime.
+757428 is not prime.
+875497 is not prime.

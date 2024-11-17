@@ -1,0 +1,298 @@
+---code---
+//uva118
+#include <iostream>
+
+using namespace std;
+
+int main() {
+  bool scent[55][55] = {0};
+  int bound_x, bound_y;
+  int init_x, init_y;
+  char init_ori;
+  int curr_x, curr_y, curr_ori = 0;
+  bool if_lost = false;
+  string ins;
+
+  cin >> bound_x >> bound_y;
+  while (cin >> init_x >> init_y >> init_ori) {
+    cin >> ins;
+    curr_x = init_x;
+    curr_y = init_y;
+    if_lost = false;
+    switch (init_ori) {
+    case 'N':
+      curr_ori = 0;
+      break;
+    case 'E':
+      curr_ori = 1;
+      break;
+    case 'S':
+      curr_ori = 2;
+      break;
+    case 'W':
+      curr_ori = 3;
+      break;
+    }
+
+    for (auto i : ins) {
+      int next_x = curr_x, next_y = curr_y;
+
+      if (i == 'L') {
+        curr_ori = (curr_ori + 3) % 4;
+      } else if (i == 'R') {
+        curr_ori = (curr_ori + 1) % 4;
+      } else if (i == 'F') {
+        switch (curr_ori) {
+        case 0:
+          next_y = curr_y + 1;
+          break;
+        case 1:
+          next_x = curr_x + 1;
+          break;
+        case 2:
+          next_y = curr_y - 1;
+          break;
+        case 3:
+          next_x = curr_x - 1;
+          break;
+        }
+        if (next_x < 0 || next_x > bound_x || next_y < 0 || next_y > bound_y) {
+          if (scent[curr_x][curr_y])
+            continue;
+          else {
+            if_lost = true;
+            scent[curr_x][curr_y] = true;
+            break;
+          }
+        }
+        curr_x = next_x;
+        curr_y = next_y;
+      }
+    }
+    cout << curr_x << " " << curr_y << " ";
+    switch (curr_ori) {
+    case 0:
+      cout << "N";
+      break;
+    case 1:
+      cout << "E";
+      break;
+    case 2:
+      cout << "S";
+      break;
+    case 3:
+      cout << "W";
+      break;
+    }
+    if (if_lost)
+      cout << " LOST";
+    cout << endl;
+  }
+  return 0;
+}
+---dataInput---
+5 3
+1 1 E
+RFRFRFRF
+3 2 N
+FRRFLLFFRRFLL
+0 3 W
+LLFFFLFLFL
+
+---dataOutput---
+1 1 E
+3 3 N LOST
+2 3 S
+---dataAInput---
+20 20
+1 1 E
+RFRFRFRF
+3 2 N
+FRRFLLFFRRFLL
+0 3 W
+LLFFFLFLFL
+1 5 S
+RLRLRFF
+11 7 E
+LFLRFFRLRFFLFRRFRRLLLFLRLFLRLLRRFL
+11 4 E
+LRRLLRFRFRRLFFRRLFFRLRRLLLRFFRFRLRRF
+6 10 E
+FFFRFFRFLLRLFFFFLRRRLLFL
+2 2 E
+RRLLRRLFFFLFLRLRFFLFLRLFLFFLLLFFRFRRLFL
+3 9 S
+LFLRLFFRFFLFRRRRFFLRLLLRR
+10 14 N
+RRLLRFFFFFFFLRFLRRRLRFL
+11 19 S
+RFLRRRRR
+1 11 E
+LRRFLFFLFFRRFLRFLLLLR
+8 3 N
+FFLLFFR
+0 1 S
+RRRFRFLLFLRLFFLR
+19 4 N
+FRRFLRFLRFLLRLRLLRRLFFRRLLFL
+2 1 N
+RLFRLLFRRRFFLLLLLLRLFLFL
+16 5 S
+FLFRLLLLLFLFFF
+16 17 N
+RRRLLLLLLFLRRFLFLLFFLRFFLLRLRLFLRFRLLRFRRF
+1 16 N
+RRLRLFRLRLF
+8 15 W
+FLRFRRFFFFRFFLLFLLLFRRFFRLFFRRRLRFLRFRFLFLFL
+1 14 N
+RLRFRRRLRFRFRLRRRRRFLRL
+6 0 W
+RLFRRFLRLFFFFRR
+3 4 E
+RFFLFFRLFLLRRFLLLRFRLLFFL
+12 5 W
+RLRLFRFFRRRFFRRLFLLFFFRRRRRFL
+16 13 N
+FFFRRRRFRRFFLRLFRRRFLFRLLLLRFRRLLRRRRRLLFFR
+17 8 S
+RLFLLRRLRLRLFFRLFLFFFRLRFLLLFFLRFRRLLLFRL
+7 14 E
+LLRFRRFRRRFFFR
+0 16 E
+FRLFLFLLFFLFRRFFRFFFLRRRLLFRRFFRRLRFFLLFL
+4 14 S
+FLRLRLRFLFFRFFLLLFFRFLRLLFFLL
+11 14 N
+RLFFLLRRLRLFLFRRLFLRFFFLFLLLFFL
+3 17 E
+FRRLFLFFRRRRLRLFFLFRRRLRF
+---dataAOutput--- 
+1 1 E
+3 3 N
+2 4 S
+0 5 W LOST
+14 12 W
+10 7 W
+13 8 N
+2 0 S LOST
+6 14 W
+17 14 S
+10 19 W
+3 10 W
+8 3 W
+0 1 W LOST
+19 5 W
+0 1 S
+18 7 N
+16 16 W
+3 16 E
+7 11 N
+3 14 E
+6 4 S
+6 0 E
+8 5 S
+17 18 E
+20 10 E LOST
+10 14 S
+1 18 E
+4 9 N
+4 14 S
+5 17 S
+---dataBInput--- 
+20 20
+1 1 E
+RFRFRFRF
+3 2 N
+FRRFLLFFRRFLL
+0 3 W
+LLFFFLFLFL
+14 11 E
+FFFFRFRFLFLRLFLLLRRRFLRLFLRRFRLRLLLR
+11 11 S
+FLFFFFFLFFFLLRRLFFFFFFRRRL
+19 7 S
+RLFLRLRL
+4 1 N
+FRFLLRFFLFLLRLFFLRFRFRLRFRFRLFFRLFLR
+13 7 E
+FLFFRLLFRRFFRRLLRRRRFFFFFFRLFRRRRFLFRFLRRF
+13 8 S
+FFLRFLFRFLLFRFLLFRFRFFRFRFRFRLFRLLFLR
+7 4 N
+FLRRRLFLRRFFRLFFFRRLLFFFRRFLLRRLRFFLLR
+4 10 W
+LLRFFFRLL
+13 17 S
+LFFRLRRLFFRFFFL
+5 15 E
+LFFRRLLRLRRLRLLLFLLRLRLRLFLLLFFFFRLLL
+10 9 E
+FLFLRLRLFLRRRFRRRF
+10 11 W
+LRLRFFLFRFLLLRFLRFLRRFRFRFLFRFLRFFF
+18 17 E
+RLRFFRRFFRRLFFFFRRFLRRLFLR
+17 16 S
+FLLRRLRFLFLRLFLRRFFRRFRRFRLLRLFRRLLLLRRFFRFR
+19 13 S
+RLRLFLFLRFLLLFLFRRRRLFLFL
+18 14 W
+FRLFRLFRLRLLRRRFFFLLRF
+8 0 S
+FFLLFLRRFLRLFFRFLLRRLFLRLL
+14 3 N
+FFRLFFRLFFRFRRFLLRL
+4 17 N
+RLLLFLLRLFRLLFFFLFLFLLRRFRFFLR
+17 6 S
+FLRFFFLFLLRLRFRFLLFLRLRRRRRRLRLFL
+1 11 N
+LLRFLRFL
+1 9 E
+RLFFLRFFRFFLRRR
+14 16 W
+RFRFRFRRRRLFRF
+8 17 S
+FFRLFLLFLFFRLFLFRFFRLLRFRRFFFRLRLF
+16 12 E
+FRRFFLFFLRLFRLRFRLRRRLRFLFLLLFRLFRFFR
+9 7 E
+RLRFLRRRRLLFLRLFFRFFFFFFLLR
+5 7 E
+FFRRLLLRLRLLFLLFRFRRFRL
+1 13 W
+LFLRLFLFFRLLRFLRLFFRRFFLLRLFLFFRRFLFFLFRRL
+
+---dataBOutput--- 
+1 1 E
+3 3 N
+2 4 S
+20 10 N
+10 13 E
+19 6 E
+6 7 N
+20 9 E LOST
+14 7 W
+8 0 S LOST
+4 7 E
+12 15 S
+5 13 N
+11 11 N
+7 14 N
+20 17 E LOST
+20 18 E LOST
+20 12 E LOST
+18 15 N
+10 4 S
+14 9 E
+3 14 S
+17 3 S
+0 11 W LOST
+5 7 N
+16 15 S
+6 14 E
+19 8 W
+2 4 S
+7 7 N
+0 14 W LOST

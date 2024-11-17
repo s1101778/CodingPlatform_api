@@ -1,0 +1,155 @@
+---code---
+//uva10101
+#include <iostream>
+#include <string>
+using namespace std;
+string table[] = {"", "shata", "hajar", "lakh", "kuti"};
+
+int main() {
+	int i = 1;
+	long long int n;
+	while((cin >> n)){
+		string s = "";
+		int t = 1, temp = 0;
+
+		if(n == 0)
+			s = "0";
+		else{
+			temp = n % 100;
+			if(temp != 0)
+				s.insert(0, to_string(temp));
+			n = n /100;
+		}
+		while(n>0){
+			if(t % 4 == 1){
+				temp = n % 10;
+				n /= 10;
+			}
+			else{
+				temp = n % 100;
+				n /= 100;
+			}
+			if(temp != 0){
+				if(s.compare("") != 0)
+					s.insert(0, to_string(temp) + " " + table[t] + " ");
+				else
+					s.insert(0, to_string(temp) + " " + table[t]);
+			}
+			else if(temp == 0 && t % 4 == 0){
+				if(s.compare("") != 0)
+					s.insert(0, table[t] + " ");
+				else
+					s.insert(0, table[t]);
+			}
+			t = (t % 4) + 1;
+		}
+		if(i < 10)
+			cout << "   ";
+		else if(i < 100)
+			cout << "  ";
+		else if(i < 1000)
+			cout << " ";
+		cout << i++ << ". " << s << endl;
+	}
+	return 0;
+}
+---dataAInput---
+23764 
+45897458973958
+0
+15
+45
+146
+890
+300
+3409
+12345
+45540
+50000
+76867
+545600
+4000000
+5300000000
+2343209230
+18293921231
+20020302234323
+20000000000000
+761000000000000
+234000000003400
+123456789012345
+999999999999999
+---dataAOutput---
+
+   1. 23 hajar 7 shata 64
+   2. 45 lakh 89 hajar 7 shata 45 kuti 89 lakh 73 hajar 9 shata 58
+   3. 0
+   4. 15
+   5. 45
+   6. 1 shata 46
+   7. 8 shata 90
+   8. 3 shata
+   9. 3 hajar 4 shata 9
+  10. 12 hajar 3 shata 45
+  11. 45 hajar 5 shata 40
+  12. 50 hajar
+  13. 76 hajar 8 shata 67
+  14. 5 lakh 45 hajar 6 shata
+  15. 40 lakh
+  16. 5 shata 30 kuti
+  17. 2 shata 34 kuti 32 lakh 9 hajar 2 shata 30
+  18. 1 hajar 8 shata 29 kuti 39 lakh 21 hajar 2 shata 31
+  19. 20 lakh 2 hajar 30 kuti 22 lakh 34 hajar 3 shata 23
+  20. 20 lakh kuti
+  21. 7 kuti 61 lakh kuti
+  22. 2 kuti 34 lakh kuti 3 hajar 4 shata
+  23. 1 kuti 23 lakh 45 hajar 6 shata 78 kuti 90 lakh 12 hajar 3 shata 45
+  24. 9 kuti 99 lakh 99 hajar 9 shata 99 kuti 99 lakh 99 hajar 9 shata 99
+---dataBInput---
+0
+12
+57
+234
+2388
+32493
+45000
+123003
+2132000
+12398123
+700000000
+234349090
+23400043330
+12399300002
+123999345034
+210000002300
+2038302390000
+23002222200000
+203928299990009
+200000000000000
+820000000003200
+234560000000023
+999999999999999
+---dataBOutput---
+
+   1. 0
+   2. 12
+   3. 57
+   4. 2 shata 34
+   5. 2 hajar 3 shata 88
+   6. 32 hajar 4 shata 93
+   7. 45 hajar
+   8. 1 lakh 23 hajar 3
+   9. 21 lakh 32 hajar
+  10. 1 kuti 23 lakh 98 hajar 1 shata 23
+  11. 70 kuti
+  12. 23 kuti 43 lakh 49 hajar 90
+  13. 2 hajar 3 shata 40 kuti 43 hajar 3 shata 30
+  14. 1 hajar 2 shata 39 kuti 93 lakh 2
+  15. 12 hajar 3 shata 99 kuti 93 lakh 45 hajar 34
+  16. 21 hajar kuti 2 hajar 3 shata
+  17. 2 lakh 3 hajar 8 shata 30 kuti 23 lakh 90 hajar
+  18. 23 lakh 2 shata 22 kuti 22 lakh
+  19. 2 kuti 3 lakh 92 hajar 8 shata 29 kuti 99 lakh 90 hajar 9
+  20. 2 kuti kuti
+  21. 8 kuti 20 lakh kuti 3 hajar 2 shata
+  22. 2 kuti 34 lakh 56 hajar kuti 23
+  23. 9 kuti 99 lakh 99 hajar 9 shata 99 kuti 99 lakh 99 hajar 9 shata 99

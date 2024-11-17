@@ -1,0 +1,111 @@
+---code---
+//uva10008
+#include <iostream>
+#include <cctype>
+#include <algorithm>
+#include <cstring>
+#include <cstdio>
+
+#define len 5000
+
+using namespace std;
+
+int main() {
+	int n, length, i, j, t;
+	char msg[len];
+
+	char alp[28]="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	int num[28] = {};
+
+	cin >> n;
+	cin.ignore();
+
+	for(i = 0; i < n ; i++) {
+		cin.getline(msg, len);
+		length = strlen(msg);
+
+		for(j = 0; j < length; j++)
+			if(isalpha(msg[j]))
+				num[toupper(msg[j])-'A']++;
+	}
+
+	for(i = 0; i < 26; i++) {
+		for(j = 0; j < 26; j++) {
+			if(num[j] < num[j+1]) {
+				t = num[j];
+				num[j] = num[j+1];
+				num[j+1] = t;
+
+				t = alp[j];
+				alp[j] = alp[j+1];
+				alp[j+1] = t;
+			}
+		}
+	}
+	for(j = 0; j < 26; j++)
+		if(num[j])
+			printf("%c %d\n", alp[j], num[j]);
+
+	return 0;
+}
+---dataInput---
+31
+How to submit your source codes 
+You can do it by using one of two ways: email and Submit-o-matic 
+Submitting via Email (NOT MORE AVAILABLE) 
+If you already are a member (a registered user) and thus you have your own User ID
+you can send by E-mail your C/C++/Java/Pascal sources, solving any of the problems available in our database,
+to judge@uva.es, in order to test whether they reach a correct answer or not. 
+For example, under Unix, and being p.c your solution for a problem in our Problem Set: 
+mail judge@uva.es < p.c 
+Your program must contain a line (at any location) with a @JUDGE_ID field.
+Usually, this line is placed inside a comment. For example, using C languaje (comments in C are placed inside /* and */) : 
+/* @JUDGE_ID: 1000AA 100 C "Dynamic Programming" */ 
+The first field after the @JUDGE_ID: is your User ID (1000AA in the example).
+It is followed by the program number (100 in the example), and, optionally, by the languaje used (it may be C, C++, Java or Pascal).
+Don't worry about upper or lower cases. If you don't specify the languaje, the judge will try to autodetect it. 
+If you have used any special algorithm or method, you can optionally include it between quotes (Dynamic Programming in the example):
+be careful in typing, and do not use more than 63 characters: it will appear in some Web Ranklist's. 
+
+Please: don't place the problem title in the algorithm field (this will be redundant in the ranklists!).
+Also, please remember to be polite with the other users: don't write disgusting comments, please
+NOTE: algorithms have been partially disabled because of some abusing people.
+If your mail system adds extra lines at the end of your letter (as Hotmail or Yahoo do), you'll get a compile error.
+A way to skip this problem is to place a "@END_OF_SOURCE_CODE" or a "@end_of_source_code" message in a single line just after the last line of source code.
+Do not place any source code in this line!. 
+If your mail system adds extra lines in the first body lines of your letter, you'll also get a compile error.
+A way to skip this problem is to place a "@BEGIN_OF_SOURCE_CODE" or a "@begin_of_source_code" message in a single line before the first line of source code.
+Do not place any source code in this line!. Submitting via Submit-o-matic 
+
+If submitting via email is not an option, try the Submit-o-matic system. 
+Just fill in your user ID, the problem ID and the language the problem is written, and then copy/paste your source-code or upload it from your machine. 
+Using Submit-o-matic, you don't have to include any @BEGIN_OF_SOURCE_CODE, @END_OF_SOURCE_CODE or @JUDGE_ID as everything is handled by the system. 
+As an example you can see the solution for problem 100 in C, Java and Pascal: LLLLLLLLll     ccccCCCC bbbbbbbbbb GGGGGGGGggg
+
+---dataOutput---
+
+E 241
+O 176
+A 171
+I 156
+T 150
+S 127
+N 124
+L 120
+R 120
+U 94
+C 85
+D 85
+M 74
+Y 60
+B 55
+G 55
+H 55
+P 55
+F 37
+W 20
+V 16
+J 15
+X 9
+K 4
+Q 1

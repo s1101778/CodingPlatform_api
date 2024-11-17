@@ -1,0 +1,169 @@
+---code---
+//uva490
+#include <iostream>
+#include <string>
+using namespace std;
+int main(){
+    string a[101];
+    int n=0;
+    int max=0;
+    while (getline(cin,a[n]) && a[n]!=""){
+        if(a[n].length()>max){
+            max = a[n].length();
+        }
+        n++;
+    }
+    for (int i=0;i<max;i++){
+        for (int j=n-1;j>=0;j--){
+            if (a[j].length()>i){
+                cout<<a[j][i];
+            }
+            else{
+                cout<<' ';
+            }
+        }
+        cout<<endl;
+    }
+}
+---dataInput---
+Rene Decartes once said,
+"I think, therefore I am."
+---dataOutput---
+"R
+Ie
+ n
+te
+h 
+iD
+ne
+kc
+,a
+ r
+tt
+he
+es
+r 
+eo
+fn
+oc
+re
+e 
+ s
+Ia
+ i
+ad
+m,
+. 
+"
+---dataAInput---
+Experience is the best teacher.
+William Hazlitt once said,
+"The more we do, the more we can do."
+Better to sail slowly than not to sail at all.
+Life is not fair; get used to it.
+---dataAOutput---
+LB"WE
+ieTix
+fthlp
+etele
+ e ir
+irmai
+s ome
+ tr n
+noeHc
+o  ae
+tswz 
+ aeli
+fi is
+aldt 
+i ott
+rs, h
+;l oe
+ otn 
+gwhcb
+eleee
+ty  s
+  mst
+utoa 
+shrit
+eaede
+dn ,a
+  w c
+tne h
+oo  e
+ tc r
+i a .
+ttn  
+.o   
+  d  
+ so  
+ a.  
+ i"  
+ l   
+     
+ a   
+ t   
+     
+ a   
+ l   
+ l   
+ .   
+
+---dataBInput---
+Knowledge is power.
+Mischief all comes from much opening of the mouth.
+Time flies.
+A friend in need is a friend indeed.
+Napoleon once said,
+"Victory belongs to the most persevering."
+---dataBOutput---
+"NATMK
+Va iin
+ipfmso
+corecw
+tli hl
+oeefie
+ronled
+yndifg
+   e e
+boisa 
+enn.li
+lc  ls
+oen   
+n e cp
+gse oo
+sad mw
+ i  ee
+tdi sr
+o,s  .
+    f 
+t a r 
+h   o 
+e f m 
+  r   
+m i m 
+o e u 
+s n c 
+t d h 
+      
+p i o 
+e n p 
+r d e 
+s e n 
+e e i 
+v d n 
+e . g 
+r     
+i   o 
+n   f 
+g     
+.   t 
+"   h 
+    e 
+      
+    m 
+    o 
+    u 
+    t 
+    h 
+    . 

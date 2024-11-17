@@ -1,0 +1,140 @@
+---code---
+//uva10035
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+	int n, m, a, b, carry, count;
+
+	scanf("%d%d", &n, &m);
+	while (n != 0 || m != 0) {
+		carry = 0;
+		count = 0;
+		while (n > 0 || m > 0) {
+			if (n % 10 + m % 10 + carry >= 10) {
+				++count;
+				carry = 1;
+			}
+			else
+				carry = 0;
+			n /= 10;
+			m /= 10;
+		}
+
+		if (count <= 1)
+			if (count == 0)
+				cout << "No carry operation.\n";
+			else
+				cout << "1 carry operation.\n";
+		else
+			cout << count << " carry operations.\n";
+
+		scanf("%d%d", &n, &m);
+	}
+
+	return 0;
+}
+---dataAInput---
+123 456
+555 555
+123 594
+2 3
+5 5
+3 9
+18 7
+10 99
+23 48
+34 13
+46 54
+23 93
+238 384
+2873 8892
+8623 2548
+23849 34034
+23 93450
+2 92340034
+99 123456789
+123289 230403
+8383843 58940945
+34997030 89349944
+344984345 398495404
+288092388 813940234
+288092388 733940234
+222222222 333333333
+999999999 999999999
+0 0
+---dataAOutput---
+No carry operation.
+3 carry operations.
+1 carry operation.
+No carry operation.
+1 carry operation.
+1 carry operation.
+1 carry operation.
+1 carry operation.
+1 carry operation.
+No carry operation.
+2 carry operations.
+1 carry operation.
+2 carry operations.
+3 carry operations.
+3 carry operations.
+1 carry operation.
+No carry operation.
+No carry operation.
+2 carry operations.
+1 carry operation.
+4 carry operations.
+5 carry operations.
+4 carry operations.
+7 carry operations.
+7 carry operations.
+No carry operation.
+9 carry operations.
+---dataBInput---
+
+2323 3232
+8 9
+923 2934
+283 48
+66 74
+37 63
+238 384
+2234873 882392
+868323 2976548
+2384934 34087734
+223843 3450987
+23492 92349487
+9234899 12333789
+13428 2435303
+1232323 52444423
+3492330 89345944
+344234324 388889934
+774975588 813236667
+288092388 723409129
+524525352 424444242
+999999999 999999999
+0 0
+---dataBOutput---
+No carry operation.
+1 carry operation.
+1 carry operation.
+2 carry operations.
+2 carry operations.
+2 carry operations.
+2 carry operations.
+4 carry operations.
+4 carry operations.
+3 carry operations.
+3 carry operations.
+2 carry operations.
+4 carry operations.
+1 carry operation.
+No carry operation.
+3 carry operations.
+6 carry operations.
+7 carry operations.
+7 carry operations.
+No carry operation.
+9 carry operations.

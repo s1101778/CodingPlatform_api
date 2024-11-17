@@ -1,0 +1,298 @@
+---code---
+//uva10050
+#include<iostream>
+using namespace std;
+int main(){
+
+    int test_case ;
+    int N ; // Days
+    int P ; // number of political parties
+    int P1[100] ;
+    int x ;
+    int sum = 0 ;
+    int hartal_parameter[3651];
+
+    // input
+    cin >> test_case ;
+
+    for(int i=0 ; i<test_case ; i++){
+
+        int counter = 0;
+
+        cin >> N >> P;
+        for(int j=0 ; j<P ; j++) cin>> P1[j] ;
+
+        //init
+        for(int j=0 ; j<=N ; j++) hartal_parameter[j] = 0 ;
+
+
+         // calculate hartal_parameter ;
+        for(int j=0 ; j<P ;j++){
+
+            x = P1[j] ;
+            sum = 0;
+            while(sum <= N) {
+
+                hartal_parameter[sum] = 1;
+                sum += x ;
+            }
+
+        }
+
+        //delete Fri Sat
+
+        for(int j=1 ; j<=N ; j++){
+
+            if(j%7 == 6 || j%7 == 0) hartal_parameter[j] = 0;
+
+        }
+
+        for(int j=1 ; j<=N ; j++){
+
+            if (hartal_parameter[j] == 1) counter++;
+
+        }
+
+        cout << counter << endl ;
+        //fout<<counter<<endl;
+    }
+
+    return 0 ;
+
+}
+---dataAInput---
+15
+14
+3
+3
+4
+8
+100
+4
+12
+15
+25
+40
+14
+1
+3
+14
+1
+4
+14
+1
+8
+100
+1
+2
+100
+2
+10
+15
+100
+5
+2
+5
+7
+9
+11
+100
+5
+3
+3
+3
+3
+3
+1000
+2
+10
+15
+2000
+5
+12
+23
+25
+6
+3
+3000
+10
+2
+3
+4
+5
+6
+12
+8
+9
+10
+11
+3650
+20
+2
+4
+6
+8
+10
+12
+13
+16
+18
+20
+19
+23
+25
+27
+29
+31
+33
+36
+37
+39
+2500
+6
+2
+5
+7
+3
+8
+2900
+5
+2
+3
+4
+9
+98
+---dataAOutput---
+5
+15
+3
+3
+1
+36
+10
+49
+24
+95
+555
+1624
+1703
+1310
+2
+---dataBInput---
+15
+100
+3
+3
+4
+8
+100
+4
+12
+15
+23
+40
+100
+1
+3
+100
+1
+4
+100
+1
+8
+150
+1
+3
+150
+2
+10
+16
+150
+5
+2
+5
+8
+9
+13
+150
+5
+4
+4
+4
+4
+4
+1050
+2
+8
+12
+2050
+5
+11
+24
+10
+6
+3
+3050
+10
+2
+15
+4
+3
+6
+12
+8
+9
+10
+14
+3650
+20
+2
+4
+6
+15
+10
+34
+13
+16
+18
+20
+19
+33
+25
+27
+29
+31
+56
+36
+37
+49
+2550
+6
+2
+6
+7
+12
+8
+2900
+5
+2
+3
+4
+5
+73
+---dataBOutput---
+37
+15
+24
+19
+10
+36
+17
+71
+27
+127
+666
+1453
+1716
+911
+2

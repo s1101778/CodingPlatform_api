@@ -1,0 +1,201 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - url: http://localhost/Coding-platform/CodingPlatform_api/public/
+    
+tags:
+  - name: auth
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: form
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: 註冊功能
+      description: 註冊功能
+      operationId: post
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /auth/login:
+    post:
+      tags:
+        - auth
+      responses:
+        "200":
+          description: OK
+  /auth/get_all_user:
+    get:
+      tags:
+        - auth
+      summary: 註冊功能
+      description: 註冊功能
+      operationId: register
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /auth/reset_password/send:
+    post:
+      tags:
+        - auth
+      summary: 寄送重設密碼信件功能
+      description: 寄送重設密碼信件功能
+      operationId: post
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /auth/reset_password/check:
+    post:
+      tags:
+        - auth
+      summary: 確認 token 功能
+      description: 確認 token 功能
+      operationId: post
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+  /auth/reset_password/reset:
+    post:
+      tags:
+        - auth
+      summary: 重設密碼功能
+      description: 重設密碼功能
+      operationId: post
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+        required: true
+      responses:
+        "200":
+          description: OK
+
+
+  /forum/post:
+    post:
+      tags:
+        - forum
+      summary: 上傳影片功能
+      description: 上傳影片功能
+      operationId: post
+      requestBody:
+        description: 上傳影片到 youtube 後，影片顯示在網頁上
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+        required: true
+      security:
+      - BearerAuth: []
+      responses:
+        "200":
+          description: OK
+  
+
+
+
+
+
+
+
+components:
+  schemas:
+    Auth:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: integer
+          format: int64
+          example: 198772
+        account:
+          type: integer
+          format: int32
+          example: 7
+        email:
+          type: string
+          format: date-time
+        password:
+          type: string
+          description: Order Status
+          example: approved
+          enum:
+            - placed
+            - approved
+            - delivered
+        complete:
+          type: boolean
+      xml:
+        name: order
+    Post:
+      type: object
+      properties:
+        serial:
+          type: integer
+          format: int64
+          example: 100
+        video_url:
+          type: string
+          example: https://www.youtube.com/watch?v=FfbU1EgWak8
+        content:
+          type: string
+          description: 描述影片或是作業內容
+          example: hi
+        code:
+          type: string
+          description: 程式碼
+          example: cout<<"Hello World";
+        code_type:
+          type: string
+          description: 程式碼類型
+          example: C
+        code_editor_type:
+          type: string
+          description: 編輯器類型
+          example: editor
+        
+      xml:
+        name: Post

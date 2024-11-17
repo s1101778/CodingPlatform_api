@@ -1,0 +1,42 @@
+[
+    {
+        "type": "Directory",
+        "name": "/var/www/CodingForum_api/app/Http/Controllers",
+        "parent_id": null,
+        "workspaceRoot": "/var/www/CodingForum_api",
+        "workspacePath": "app/Http/Controllers",
+        "id": "9JMe5DX1B0GV2zAw"
+    },
+    {
+        "type": "Directory",
+        "name": "/var/www/CodingForum_api/app/Models",
+        "parent_id": null,
+        "workspaceRoot": "/var/www/CodingForum_api",
+        "workspacePath": "app/Models",
+        "id": "TcAQk8HzMSRN4o7V"
+    },
+    {
+        "type": "Directory",
+        "name": "/var/www/CodingForum_api/database/migrations",
+        "parent_id": null,
+        "workspaceRoot": "/var/www/CodingForum_api",
+        "workspacePath": "database/migrations",
+        "id": "gTuAsnHZY4MeRQvS"
+    },
+    {
+        "type": "File",
+        "name": "/var/www/CodingForum_api/routes/api.php",
+        "parent_id": null,
+        "workspaceRoot": "/var/www/CodingForum_api",
+        "workspacePath": "routes/api.php",
+        "id": "ITfWhvMu4Z5tQbEV"
+    },
+    {
+        "type": "Directory",
+        "name": "/var/www/CodingForum_api/public",
+        "parent_id": null,
+        "workspaceRoot": "/var/www/CodingForum_api",
+        "workspacePath": "public",
+        "id": "ivJ0GQg8OwmrnYTZ"
+    }
+]
